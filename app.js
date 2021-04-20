@@ -9,6 +9,7 @@ var interval;
 const WALL = 4;
 const PACMAN = 2;
 const FOOD = 1;
+var side = "Right";
 
 
 $(document).ready(function() {
@@ -27,11 +28,11 @@ function Start() {
 	[4, 0, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 0, 4],
 	[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
 	[4, 4, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 4, 4],
-	[0, 0, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 4, 0, 0, 0],
+	[0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
 	[4, 4, 4, 4, 0, 4, 0, 4, 4, 0, 4, 4, 0, 4, 0, 4, 4, 4, 4],
 	[0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
 	[4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4],
-	[0, 0, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 4, 0, 0, 0],
+	[0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
 	[4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4],
 	[4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4],
 	[4, 0, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 0, 4],
@@ -102,7 +103,7 @@ function Start() {
 		},
 		false
 	);
-	interval = setInterval(UpdatePosition, 250);
+	interval = setInterval(UpdatePosition, 10);
 }
 
 
@@ -117,21 +118,21 @@ function findRandomEmptyCell(board) {
 }
 
 function GetKeyPressed() {
-	if (keysDown[38]) {
+	if (keysDown[87]) {
 		return 1;
 	}
-	if (keysDown[40]) {
+	if (keysDown[83]) {
 		return 2;
 	}
-	if (keysDown[37]) {
+	if (keysDown[65]) {
 		return 3;
 	}
-	if (keysDown[39]) {
+	if (keysDown[68]) {
 		return 4;
 	}
 }
 
-function Draw() {
+function Draw(pacmanDir = "Right") {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
@@ -143,7 +144,15 @@ function Draw() {
 			center.y = j * 30 + 30;
 			if (board[i][j] == PACMAN) {
 				context.beginPath();
-				context.arc(center.x, center.y, 15, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+				console.log(pacmanDir)
+				if(pacmanDir == "Right"){
+					context.arc(center.x, center.y, 15, 1.85 * Math.PI, 0.15 * Math.PI, true);
+				} else if (pacmanDir == "Left"){
+					context.arc(center.x, center.y, 15, 1.15 * Math.PI, 0.85 * Math.PI, false); // half circle
+				}else if(pacmanDir == "Up"){
+					context.arc(center.x, center.y, 15, -0.3 * Math.PI, 1.3* Math.PI, false); // half circle
+				}
+
 				context.lineTo(center.x, center.y);
 				context.fillStyle = pac_color; //color
 				context.fill();
@@ -172,21 +181,26 @@ function UpdatePosition() {
 	if (x == 1) {
 		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
 			shape.j--;
+			side = "Up";
 		}
 	}
 	if (x == 2) {
 		if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
 			shape.j++;
+			// side = "Down";
+
 		}
 	}
 	if (x == 3) {
 		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
 			shape.i--;
+			side = "Left";
 		}
 	}
 	if (x == 4) {
 		if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
 			shape.i++;
+			side = "Right";
 		}
 	}
 	if (board[shape.i][shape.j] == 1) {
@@ -202,6 +216,8 @@ function UpdatePosition() {
 		window.clearInterval(interval);
 		window.alert("Game completed");
 	} else {
-		Draw();
+		// console.log(x);
+		console.log(side);
+		Draw(side);
 	}
 }
