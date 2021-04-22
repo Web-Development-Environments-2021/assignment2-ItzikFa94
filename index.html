@@ -6,7 +6,7 @@
     <script type="text/javascript" src="./app.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Odibee+Sans&family=Roboto&display=swap"
       rel="stylesheet"
     />
     <title>Ariel and Itzik's PacMan</title>
@@ -14,9 +14,11 @@
 
   <body>
     <header>
-		<img src="assets/images/pacmanlogo.svg" />
-      <div id="header-logo-text"><h2>~ Ariel & Itzik ~</h2><h1>PACMAN</h1></div>
-      
+      <img src="assets/images/pacmanlogo.svg" />
+      <div id="header-logo-text">
+        <h2>~ Ariel & Itzik ~</h2>
+        <h1>PACMAN</h1>
+      </div>
     </header>
     <nav id="top-nav-bar">
       <ul id="top-nav-bar-menu">
@@ -28,7 +30,7 @@
     </nav>
 
     <section>
-      <div id="score">
+      <!-- <div id="score">
         <label for="lblScore">SCORE:</label>
         <input id="lblScore" type="text" />
       </div>
@@ -38,6 +40,55 @@
       </div>
       <div id="game">
         <canvas id="canvas" height="1000" width="1000"></canvas>
+      </div> -->
+      <div id="register-section">
+        <form id="register-section-form">
+          <div class="formInstructionsDiv formElement">
+            <h2 id="formTitle">Sign Up</h2>
+            <p id="instructionsText">
+              Please fill in this form to start playing
+            </p>
+          </div>
+          <div class="fillContentDiv formElement">
+            <input
+              class="inputRequest formContentElement"
+              type="text"
+              placeholder="User Name"
+            />
+            <input
+              class="inputRequest formContentElement"
+              type="password"
+              placeholder="Enter password"
+            />
+            <input
+              class="inputRequest formContentElement"
+              type="password"
+              placeholder="Confirm password"
+            />
+            <div class="names formContentElement">
+              <input
+                class="inputRequest"
+                type="text"
+                placeholder="First Name"
+              />
+              <input class="inputRequest" type="text" placeholder="Last Name" />
+            </div>
+            <input
+              class="inputRequest formContentElement"
+              type="text"
+              placeholder="Email"
+            />
+            <input
+              class="inputRequest formContentElement"
+              type="text"
+              placeholder="Birth Date"
+            />
+          </div>
+          <div class="submitButtonDiv formElement">
+            <button class="submitButton">Sign Up</button>
+            <button class="submitButton">Clear</button>
+          </div>
+        </form>
       </div>
     </section>
     <footer>This is a fucking footer</footer>
