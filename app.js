@@ -10,9 +10,11 @@ const WALL = 4;
 const PACMAN = 2;
 const FOOD = 1;
 var side = "Right";
-
+let users = [{username: 'k', password: 'k', firstname: 'Kyle', lastname: 'Kennedy', email: 'kk@gmail.com', birthdate: '30/06/1994'}];
+let loggedInUser = null;
 
 $(document).ready(function() {
+	let canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 	Start();
 });
@@ -136,7 +138,6 @@ function Draw(pacmanDir = "Right") {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
-	// console.log(board.length);
 	for (var i = 0; i < board.length; i++) {
 		for (var j = 0; j < board[0].length; j++) {
 			var center = new Object();
@@ -144,7 +145,6 @@ function Draw(pacmanDir = "Right") {
 			center.y = j * 30 + 30;
 			if (board[i][j] == PACMAN) {
 				context.beginPath();
-				console.log(pacmanDir)
 				if(pacmanDir == "Right"){
 					context.arc(center.x, center.y, 15, 1.85 * Math.PI, 0.15 * Math.PI, true);
 				} else if (pacmanDir == "Left"){
@@ -216,8 +216,80 @@ function UpdatePosition() {
 		window.clearInterval(interval);
 		window.alert("Game completed");
 	} else {
-		// console.log(x);
-		console.log(side);
 		Draw(side);
 	}
+}
+
+function registerUser(){
+	console.log(users.length);
+	const username = document.getElementById('register-form-username').value;
+	const password = document.getElementById('register-form-password').value;
+	const confirmpassword = document.getElementById('register-form-confirmpassword').value;
+	const firstname = document.getElementById('register-form-firstname').value;
+	const lastname = document.getElementById('register-form-lastname').value;
+	const email = document.getElementById('register-form-email').value;
+	const birthdate = document.getElementById('register-form-birthdate').value;
+
+	const resultValidation = validateNewUser(username, password, confirmpassword, firstname, lastname, email, birthdate);
+	if(resultValidation !== 'VALID')
+	{
+		alert(resultValidation);
+		return;
+	}
+	const newUser = {username: username, password: password, firstname: firstname, lastname: lastname, email: email, birthdate: birthdate};
+	users.push(newUser);
+	alert('Registration completed successfully, Please head to Login page');
+}
+
+function validateNewUser(username, password, confirmpassword, firstname, lastname, email, birthdate){
+	if(username.length === 0)
+	{
+		return "Must fill User Name field.";
+	}
+	const letterNumber = /^[0-9a-zA-Z]+$/;
+	if(password.length < 6 || !(password.match(letterNumber)))
+	{
+		return "Password must be at least 6 characters long, containing at least one digit [0-9] and one letter [A-Z,a-z]."
+	}
+	if(password !== confirmpassword)
+	{
+		return "Password and Confirm Password fields must be identical.";
+	}
+	const hasnumber = /\d/;
+	if(firstname.match(hasnumber))
+	{
+		return "First Name must contain nothing but letters."
+	}
+	if(lastname.match(hasnumber))
+	{
+		return "Last Name must contain nothing but letters."
+	}
+	const validMail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	if(! validMail.test(email.toLowerCase()))
+	{
+		return "Mail is not valid";
+	}
+	return "VALID";
+
+}
+
+function logIn(){ 
+	const username = document.getElementById('login-form-username').value;
+	const password = document.getElementById('login-form-password').value;
+	console.log(username, password);
+	for(let i = 0; i < users.length; i++){
+		console.log(users[i]);
+		if(users[i].username === username)
+		{
+			if(users[i].password === password)
+			{
+				loggedInUser = users[i];
+				alert("Welcome "+loggedInUser.firstname+"!");
+			}
+			else{
+				alert("Password is incorrect");
+			}
+		}
+	}
+	alert(username + " is not a registered User, please head to Registration page.")
 }

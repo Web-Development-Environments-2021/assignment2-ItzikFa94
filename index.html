@@ -30,7 +30,7 @@
     </nav>
 
     <section>
-      <!-- <div id="score">
+      <div id="score">
         <label for="lblScore">SCORE:</label>
         <input id="lblScore" type="text" />
       </div>
@@ -40,56 +40,93 @@
       </div>
       <div id="game">
         <canvas id="canvas" height="1000" width="1000"></canvas>
-      </div> -->
-      <div id="register-section">
-        <form id="register-section-form">
-          <div class="formInstructionsDiv formElement">
-            <h2 id="formTitle">Sign Up</h2>
-            <p id="instructionsText">
-              Please fill in this form to start playing
-            </p>
-          </div>
-          <div class="fillContentDiv formElement">
-            <input
-              class="inputRequest formContentElement"
-              type="text"
-              placeholder="User Name"
-            />
-            <input
-              class="inputRequest formContentElement"
-              type="password"
-              placeholder="Enter password"
-            />
-            <input
-              class="inputRequest formContentElement"
-              type="password"
-              placeholder="Confirm password"
-            />
-            <div class="names formContentElement">
-              <input
-                class="inputRequest"
-                type="text"
-                placeholder="First Name"
-              />
-              <input class="inputRequest" type="text" placeholder="Last Name" />
-            </div>
-            <input
-              class="inputRequest formContentElement"
-              type="text"
-              placeholder="Email"
-            />
-            <input
-              class="inputRequest formContentElement"
-              type="text"
-              placeholder="Birth Date"
-            />
-          </div>
-          <div class="submitButtonDiv formElement">
-            <button class="submitButton">Sign Up</button>
-            <button class="submitButton">Clear</button>
-          </div>
-        </form>
       </div>
+    </section>
+    <section id="register-section" class="form-section">
+      <form id="register-section-form" class="application-forms">
+        <div class="formInstructionsDiv formElement">
+          <h2 id="formTitle">Sign Up</h2>
+          <p id="instructionsText">
+            Please fill in this form to register your account
+          </p>
+        </div>
+        <div class="fillContentDiv formElement">
+          <input
+            class="inputRequest formContentElement"
+            type="text"
+            placeholder="User Name"
+            id="register-form-username"
+          />
+          <input
+            class="inputRequest formContentElement"
+            type="password"
+            placeholder="Enter password"
+            id="register-form-password"
+          />
+          <input
+            class="inputRequest formContentElement"
+            type="password"
+            placeholder="Confirm password"
+            id="register-form-confirmpassword"
+          />
+          <div class="names formContentElement">
+            <input
+              class="inputRequest"
+              type="text"
+              placeholder="First Name"
+              id="register-form-firstname"
+            />
+            <input
+              class="inputRequest"
+              type="text"
+              placeholder="Last Name"
+              id="register-form-lastname"
+            />
+          </div>
+          <input
+            class="inputRequest formContentElement"
+            type="text"
+            placeholder="Email"
+            id="register-form-email"
+          />
+          <input
+            class="inputRequest formContentElement"
+            type="date"
+            placeholder="Birth Date"
+            id="register-form-birthdate"
+          />
+        </div>
+        <div class="submitButtonDiv formElement">
+          <button class="submitButton" onclick="registerUser()">Sign Up</button>
+          <button class="submitButton">Clear</button>
+        </div>
+      </form>
+    </section>
+    <section id="login-section" class="form-section">
+      <form id="login-section-form" class="application-forms">
+        <div class="formInstructionsDiv formElement">
+          <h2 id="formTitle">Log In</h2>
+          <p id="instructionsText">Please log in to start play</p>
+        </div>
+        <div class="fillContentDiv formElement">
+          <input
+            class="inputRequest formContentElement"
+            type="text"
+            placeholder="User Name"
+            id="login-form-username"
+          />
+          <input
+            class="inputRequest formContentElement"
+            type="password"
+            placeholder="Enter password"
+            id="login-form-password"
+          />
+        </div>
+        <div class="submitButtonDiv formElement">
+          <button class="submitButton" onclick="logIn()">Log In</button>
+          <button class="submitButton">Clear</button>
+        </div>
+      </form>
     </section>
     <footer>This is a fucking footer</footer>
   </body>
