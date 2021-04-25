@@ -17,7 +17,61 @@ $(document).ready(function() {
 	let canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 	Start();
+
 });
+
+$(document).ready(function() {
+	$.validator.addMethod("validPassword", function(value) {
+		return /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(value);
+	}, 'Password must contain at least one character and one number');
+	$.validator.addMethod("noNumbers", function(value) {
+		return /^[a-zA-Z]+$/.test(value);
+	});
+	$('#registeration-form').validate({ // initialize the plugin
+        rules: {
+            username: {
+                required: true,
+            },
+			password: {
+				required: true,
+				validPassword: true,
+				minlength: 6,
+			},
+			confirmpassword: {
+				equalTo: "#password",
+			},
+			firstname: {
+				required: true,
+				noNumbers: true,
+			},
+			lastname: {
+				required: true,
+				noNumbers: true,
+			},
+			email: {
+				required: true,
+				email: true,
+			},
+			birthdate: {
+				required: true,
+			}
+        },
+		messages: {
+			password:{
+				minlength: "Password must be at least 6 characters long."
+			},
+			confirmpassword: {
+				equalTo: "Password and Confirm Password must match."
+			},
+			firstname: {
+				noNumbers: "Letters allowed only."
+			},
+			lastname: {
+				noNumbers: "Letters allowed only."
+			}
+		}
+    });
+})
 
 function Start() {
 	// board = new Array();
