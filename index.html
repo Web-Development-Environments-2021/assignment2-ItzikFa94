@@ -2,9 +2,17 @@
 <html>
   <head>
     <script src="./jquery-3.4.1.slim.min.js"></script>
+    <script src="jquery.js"></script>
+    <script src="jquery.validate.js"></script>
     <link rel="stylesheet" href="style.css" />
     <script type="text/javascript" src="./app.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Odibee+Sans&family=Roboto&display=swap"
       rel="stylesheet"
@@ -13,40 +21,82 @@
   </head>
 
   <body>
-    <header>
-      <img src="assets/images/pacmanlogo.svg" />
-      <div id="header-logo-text">
-        <h2>~ Ariel & Itzik ~</h2>
-        <h1>PACMAN</h1>
-      </div>
-    </header>
-    <nav id="top-nav-bar">
-      <ul id="top-nav-bar-menu">
-        <li class="top-nav-bar-menu-item">Welcome</li>
-        <li class="top-nav-bar-menu-item">Register</li>
-        <li class="top-nav-bar-menu-item">Login</li>
-        <li class="top-nav-bar-menu-item">About</li>
-      </ul>
-    </nav>
-
-    <section>
-      <!-- <div id="score">
-        <label for="lblScore">SCORE:</label>
-        <input id="lblScore" type="text" />
-      </div>
-      <div id="time">
-        <label for="lblTime">TIME:</label>
-        <input id="lblTime" type="text" />
-      </div>
-      <div id="game">
-        <canvas id="canvas" height="1000" width="1000"></canvas>
-      </div> -->
-      <div id="register-section">
-        <form id="register-section-form">
+    <div id="content">
+      <header>
+        <img src="assets/images/pacmanlogo.svg" />
+        <div id="header-logo-text">
+          <h2>~ Ariel & Itzik ~</h2>
+          <h1>PACMAN</h1>
+        </div>
+      </header>
+      <nav id="top-nav-bar">
+        <ul id="top-nav-bar-menu">
+          <li
+            id="nav-welcome-btn"
+            class="top-nav-bar-menu-item"
+            onclick="welcomeClicked()"
+          >
+            Welcome
+          </li>
+          <li id="nav-play-btn" class="top-nav-bar-menu-item">Play</li>
+          <li id="nav-register-btn" class="top-nav-bar-menu-item">Register</li>
+          <li id="nav-login-btn" class="top-nav-bar-menu-item">Login</li>
+          <li id="nav-logout-btn" class="top-nav-bar-menu-item">Logout</li>
+          <li class="top-nav-bar-menu-item">
+            <a href="#about" rel="modal:open">About</a>
+          </li>
+        </ul>
+      </nav>
+      <section class="welcome-section" id="welcome-section-notloggedin">
+        <!-- <div id="welcome-section-notloggedin"> -->
+        <h1>Hi there, Welcome!</h1>
+        <p>In order to enjoy PacMan, please Log in</p>
+        <input
+          id="welcome-login-btn"
+          type="button"
+          class="submitButton btnsWelcome"
+          value="Login"
+        />
+        <p>Don't have user? No problem</p>
+        <input
+          id="welcome-register-btn"
+          type="button"
+          class="submitButton btnsWelcome"
+          value="Register"
+        />
+        <!-- </div> -->
+        <!-- <div id="welcome-section-loggedin"> -->
+        <!-- </div> -->
+      </section>
+      <section class="welcome-section" id="welcome-section-loggedin">
+        <h1>Hi there, Welcome!</h1>
+        <p>Enjoy the game</p>
+        <input
+          id="welcome-play-btn"
+          type="button"
+          class="submitButton btnsWelcome"
+          value="PLAY!"
+        />
+      </section>
+      <section id="play-section">
+        <div id="score">
+          <label for="lblScore">SCORE:</label>
+          <input id="lblScore" type="text" />
+        </div>
+        <div id="time">
+          <label for="lblTime">TIME:</label>
+          <input id="lblTime" type="text" />
+        </div>
+        <div id="game">
+          <canvas id="canvas" height="1000" width="1000"></canvas>
+        </div>
+      </section>
+      <section id="register-section" class="form-section">
+        <form id="registeration-form" class="application-forms">
           <div class="formInstructionsDiv formElement">
             <h2 id="formTitle">Sign Up</h2>
             <p id="instructionsText">
-              Please fill in this form to start playing
+              Please fill in this form to register your account
             </p>
           </div>
           <div class="fillContentDiv formElement">
@@ -54,43 +104,136 @@
               class="inputRequest formContentElement"
               type="text"
               placeholder="User Name"
+              id="username"
+              name="username"
             />
             <input
               class="inputRequest formContentElement"
               type="password"
               placeholder="Enter password"
+              id="password"
+              name="password"
             />
             <input
               class="inputRequest formContentElement"
               type="password"
               placeholder="Confirm password"
+              id="register-form-confirmpassword"
+              name="confirmpassword"
             />
             <div class="names formContentElement">
-              <input
-                class="inputRequest"
-                type="text"
-                placeholder="First Name"
-              />
-              <input class="inputRequest" type="text" placeholder="Last Name" />
+              <div class="sub-names">
+                <input
+                  class="inputRequest"
+                  type="text"
+                  placeholder="First Name"
+                  id="register-form-firstname"
+                  name="firstname"
+                />
+              </div>
+              <div class="sub-names">
+                <input
+                  class="inputRequest"
+                  type="text"
+                  placeholder="Last Name"
+                  id="register-form-lastname"
+                  name="lastname"
+                />
+              </div>
             </div>
             <input
               class="inputRequest formContentElement"
               type="text"
               placeholder="Email"
+              id="register-form-email"
+              name="email"
             />
             <input
               class="inputRequest formContentElement"
               type="text"
               placeholder="Birth Date"
+              id="register-form-birthdate"
+              name="birthdate"
+              onfocus="this.type='date'"
+              onblur="this.type='text'"
             />
           </div>
           <div class="submitButtonDiv formElement">
-            <button class="submitButton">Sign Up</button>
-            <button class="submitButton">Clear</button>
+            <input type="submit" class="submitButton" />
+            <input type="reset" class="submitButton" />
           </div>
         </form>
+      </section>
+      <section id="login-section" class="form-section">
+        <form id="login-section-form" class="application-forms">
+          <div class="formInstructionsDiv formElement">
+            <h2 id="formTitle">Log In</h2>
+            <p id="instructionsText">Please log in to start play</p>
+          </div>
+          <div class="fillContentDiv formElement">
+            <input
+              class="inputRequest formContentElement"
+              type="text"
+              placeholder="User Name"
+              id="login-form-username"
+            />
+            <input
+              class="inputRequest formContentElement"
+              type="password"
+              placeholder="Enter password"
+              id="login-form-password"
+            />
+          </div>
+          <div class="submitButtonDiv formElement">
+            <input type="submit" class="submitButton" onclick="return logIn()"/>
+            <input type="reset" class="submitButton" />
+          </div>
+        </form>
+      </section>
+      <footer>This is a fucking footer</footer>
+
+      <div id="about" class="modal">
+        <div id="about-header" class="formInstructionsDiv formElement">
+          <h1 id="about-header-title">About</h1>
+        </div>
+        <div id="about-content" class="fillContentDiv formElement">
+          <h2 class="about-sub-header">Made by</h2>
+          <ul class="about-list">
+            <li><p>Itzik Fadida - 205417637</p></li>
+            <li><p>Ariel Blobstein - 206197113</p></li>
+          </ul>
+          <h2 class="about-sub-header">Used jQuery Plugins</h2>
+          <ol class="about-list">
+            <li>
+              <p>
+                <a href="https://jquerymodal.com/">jQuery Modal</a> - About
+                modal
+              </p>
+            </li>
+            <li>
+              <p>
+                <a href="https://jqueryvalidation.org/">jQuery Validation</a> -
+                Validating registeration form
+              </p>
+            </li>
+          </ol>
+          <h2 class="about-sub-header">Few Words...</h2>
+          <p>
+            The struggling part building this project was using Git toghter,
+            each of us needed to work on specific feature. Therefore, we managed
+            to create different branches and merging them after finish.
+          </p>
+          <p>
+            Implementing monsters to chase pacman was also challenging, we
+            implemted it using DFS algorithm, so you better start running ;)
+          </p>
+          <p>Good luck and have fun!</p>
+
+          <a id="about-close" class="submitButton" href="#" rel="modal:close"
+            >Close</a
+          >
+        </div>
       </div>
-    </section>
-    <footer>This is a fucking footer</footer>
+    </div>
   </body>
 </html>

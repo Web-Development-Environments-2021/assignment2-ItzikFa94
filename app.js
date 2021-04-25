@@ -37,9 +37,12 @@ const COL = 19;
 var INTERVAL_SPECIAL = 500;
 var side = "Right";
 const FoodNumber = 100;
+let users = [{ username: 'k', password: 'k', firstname: 'Kyle', lastname: 'Kennedy', email: 'kk@gmail.com', birthdate: '30/06/1994' }];
+let loggedInUser = undefined;
+let goToReady = true;
 
-
-$(document).ready(function() {
+$(document).ready(function () {
+	let canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 	Start();
 });
@@ -47,6 +50,128 @@ function ResetGhosts(){
 	for(let i = 0; i < ghosts.length; i++){
 		ghosts[i].i = ghostStartPositiong[i][0];
 		ghosts[i].j = ghostStartPositiong[i][1];
+	}
+}
+
+$(document).ready(function () {
+	$.validator.addMethod("validPassword", function (value) {
+		return /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(value);
+	}, 'Password must contain at least one character and one number');
+	$.validator.addMethod("noNumbers", function (value) {
+		return /^[a-zA-Z]+$/.test(value);
+	});
+	$('#registeration-form').validate({ // initialize the plugin
+		rules: {
+			username: {
+				required: true,
+			},
+			password: {
+				required: true,
+				validPassword: true,
+				minlength: 6,
+			},
+			confirmpassword: {
+				equalTo: "#password",
+			},
+			firstname: {
+				required: true,
+				noNumbers: true,
+			},
+			lastname: {
+				required: true,
+				noNumbers: true,
+			},
+			email: {
+				required: true,
+				email: true,
+			},
+			birthdate: {
+				required: true,
+			}
+		},
+		messages: {
+			password: {
+				minlength: "Password must be at least 6 characters long."
+			},
+			confirmpassword: {
+				equalTo: "Password and Confirm Password must match."
+			},
+			firstname: {
+				noNumbers: "Letters allowed only."
+			},
+			lastname: {
+				noNumbers: "Letters allowed only."
+			}
+		}
+	});
+})
+
+$(document).ready(function () {
+	$("#play-section").hide();
+	$("#register-section").hide();
+	$("#login-section").hide();
+	if (loggedInUser !== undefined) {
+		$("#welcome-section-notloggedin").hide();
+		$("#nav-login-btn").hide();
+		$("#nav-register-btn").hide();
+	}
+	else {
+		$("#welcome-section-loggedin").hide();
+		$("#nav-logout-btn").hide();
+		$("#nav-play-btn").hide();
+	}
+
+	$("#nav-play-btn").click(function () {
+		$("#play-section").show();
+		$("#register-section").hide();
+		$("#login-section").hide();
+		$(".welcome-section").hide();
+	});
+
+	$("#nav-register-btn").click(function () {
+		$("#register-section").show();
+		$("#login-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	$("#nav-login-btn").click(function () {
+		$("#login-section").show();
+		$("#register-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	$("#welcome-login-btn").click(function () {
+		$("#login-section").show();
+		$("#register-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	$("#welcome-register-btn").click(function () {
+		$("#register-section").show();
+		$("#login-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+	goToReady = false;
+});
+
+function welcomeClicked() {
+	$("#welcome-section").show();
+	$("#register-section").hide();
+	$("#login-section").hide();
+	$("#play-section").hide();
+	if (loggedInUser !== undefined) {
+		alert("loggedInUser is not null " + loggedInUser['username']);
+		$("#welcome-section-loggedin").show();
+		$("#welcome-section-notloggedin").hide();
+	}
+	else {
+		$("#welcome-section-loggedin").hide();
+		$("#welcome-section-notloggedin").show();
+		alert("asdfa");
 	}
 }
 function Start() {
@@ -112,7 +237,7 @@ function Start() {
 				food_remain--;
 				board[i][j] = FOOD;
 			}
-			 else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
+			else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 				shape.i = i;
 				shape.j = j;
 				pacman_remain--;
@@ -122,8 +247,8 @@ function Start() {
 				board[i][j] = -1;
 			}
 			cnt--;
-			}
 		}
+	}
 	// }
 	// Update Speical Characater starting position
 	board[15][7] = SPECIAL_CHAR;
@@ -146,14 +271,14 @@ function Start() {
 	keysDown = {};
 	addEventListener(
 		"keydown",
-		function(e) {
+		function (e) {
 			keysDown[e.keyCode] = true;
 		},
 		false
 	);
 	addEventListener(
 		"keyup",
-		function(e) {
+		function (e) {
 			keysDown[e.keyCode] = false;
 		},
 		false
@@ -218,7 +343,7 @@ function Draw(pacmanDir = "Right") {
 				context.beginPath();
 				if(pacmanDir == "Right"){
 					context.arc(center.x, center.y, 15, 1.85 * Math.PI, 0.15 * Math.PI, true);
-				} else if (pacmanDir == "Left"){
+				} else if (pacmanDir == "Left") {
 					context.arc(center.x, center.y, 15, 1.15 * Math.PI, 0.85 * Math.PI, false); // half circle
 				}else if(pacmanDir == "Up"){
 					context.arc(center.x, center.y, 15, -0.3 * Math.PI, 1.3* Math.PI, false); // half circle
@@ -254,7 +379,7 @@ function Draw(pacmanDir = "Right") {
 				context.fill();
 			} else if (board[i][j] == WALL) {
 				context.beginPath();
-				context.rect(center.x-15 , center.y - 15, 30, 30);
+				context.rect(center.x - 15, center.y - 15, 30, 30);
 				context.fillStyle = "grey"; //color
 				context.fill();
 			}else if(board[i][j] == GHOST) {
@@ -501,4 +626,76 @@ function UpdatePosition() {
 		lastPacman = side;
 		Draw(side);
 	}
+}
+
+function registerUser() {
+	console.log(users.length);
+	const username = document.getElementById('register-form-username').value;
+	const password = document.getElementById('register-form-password').value;
+	const confirmpassword = document.getElementById('register-form-confirmpassword').value;
+	const firstname = document.getElementById('register-form-firstname').value;
+	const lastname = document.getElementById('register-form-lastname').value;
+	const email = document.getElementById('register-form-email').value;
+	const birthdate = document.getElementById('register-form-birthdate').value;
+
+	const resultValidation = validateNewUser(username, password, confirmpassword, firstname, lastname, email, birthdate);
+	if (resultValidation !== 'VALID') {
+		alert(resultValidation);
+		return;
+	}
+	const newUser = { username: username, password: password, firstname: firstname, lastname: lastname, email: email, birthdate: birthdate };
+	users.push(newUser);
+	alert('Registration completed successfully, Please head to Login page');
+}
+
+function validateNewUser(username, password, confirmpassword, firstname, lastname, email, birthdate) {
+	if (username.length === 0) {
+		return "Must fill User Name field.";
+	}
+	const letterNumber = /^[0-9a-zA-Z]+$/;
+	if (password.length < 6 || !(password.match(letterNumber))) {
+		return "Password must be at least 6 characters long, containing at least one digit [0-9] and one letter [A-Z,a-z]."
+	}
+	if (password !== confirmpassword) {
+		return "Password and Confirm Password fields must be identical.";
+	}
+	const hasnumber = /\d/;
+	if (firstname.match(hasnumber)) {
+		return "First Name must contain nothing but letters."
+	}
+	if (lastname.match(hasnumber)) {
+		return "Last Name must contain nothing but letters."
+	}
+	const validMail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	if (!validMail.test(email.toLowerCase())) {
+		return "Mail is not valid";
+	}
+	return "VALID";
+
+}
+
+function logIn() {
+	const username = document.getElementById('login-form-username').value;
+	const password = document.getElementById('login-form-password').value;
+	for (let i = 0; i < users.length; i++) {
+		if (users[i]['username'] === username) {
+			if (users[i]['password'] === password) {
+				loggedInUser = users[i];
+				alert("Welcome " + loggedInUser['firstname'] + "!");
+				$("#login-section").hide();
+				$("#welcome-section-loggedin").show();
+				$("#nav-login-btn").hide();
+				$("#nav-register-btn").hide();
+				$("#nav-logout-btn").show();
+				$("#nav-play-btn").show();
+				return false;
+			}
+			else {
+				alert("Password is incorrect");
+				return false;
+			}
+		}
+	}
+	alert(username + " is not a registered User, please head to Registration page.");
+	return false;
 }
