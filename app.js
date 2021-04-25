@@ -10,28 +10,28 @@ const WALL = 4;
 const PACMAN = 2;
 const FOOD = 1;
 var side = "Right";
-let users = [{username: 'k', password: 'k', firstname: 'Kyle', lastname: 'Kennedy', email: 'kk@gmail.com', birthdate: '30/06/1994'}];
-let loggedInUser = null;
+let users = [{ username: 'k', password: 'k', firstname: 'Kyle', lastname: 'Kennedy', email: 'kk@gmail.com', birthdate: '30/06/1994' }];
+let loggedInUser = undefined;
+let goToReady = true;
 
-$(document).ready(function() {
+$(document).ready(function () {
 	let canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 	Start();
-
 });
 
-$(document).ready(function() {
-	$.validator.addMethod("validPassword", function(value) {
+$(document).ready(function () {
+	$.validator.addMethod("validPassword", function (value) {
 		return /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(value);
 	}, 'Password must contain at least one character and one number');
-	$.validator.addMethod("noNumbers", function(value) {
+	$.validator.addMethod("noNumbers", function (value) {
 		return /^[a-zA-Z]+$/.test(value);
 	});
 	$('#registeration-form').validate({ // initialize the plugin
-        rules: {
-            username: {
-                required: true,
-            },
+		rules: {
+			username: {
+				required: true,
+			},
 			password: {
 				required: true,
 				validPassword: true,
@@ -55,9 +55,9 @@ $(document).ready(function() {
 			birthdate: {
 				required: true,
 			}
-        },
+		},
 		messages: {
-			password:{
+			password: {
 				minlength: "Password must be at least 6 characters long."
 			},
 			confirmpassword: {
@@ -70,34 +70,102 @@ $(document).ready(function() {
 				noNumbers: "Letters allowed only."
 			}
 		}
-    });
+	});
 })
 
+$(document).ready(function () {
+	$("#play-section").hide();
+	$("#register-section").hide();
+	$("#login-section").hide();
+	if (loggedInUser !== undefined) {
+		$("#welcome-section-notloggedin").hide();
+		$("#nav-login-btn").hide();
+		$("#nav-register-btn").hide();
+	}
+	else {
+		$("#welcome-section-loggedin").hide();
+		$("#nav-logout-btn").hide();
+		$("#nav-play-btn").hide();
+	}
+
+	$("#nav-play-btn").click(function () {
+		$("#play-section").show();
+		$("#register-section").hide();
+		$("#login-section").hide();
+		$(".welcome-section").hide();
+	});
+
+	$("#nav-register-btn").click(function () {
+		$("#register-section").show();
+		$("#login-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	$("#nav-login-btn").click(function () {
+		$("#login-section").show();
+		$("#register-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	$("#welcome-login-btn").click(function () {
+		$("#login-section").show();
+		$("#register-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	$("#welcome-register-btn").click(function () {
+		$("#register-section").show();
+		$("#login-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+	goToReady = false;
+});
+
+function welcomeClicked() {
+	$("#welcome-section").show();
+	$("#register-section").hide();
+	$("#login-section").hide();
+	$("#play-section").hide();
+	if (loggedInUser !== undefined) {
+		alert("loggedInUser is not null " + loggedInUser['username']);
+		$("#welcome-section-loggedin").show();
+		$("#welcome-section-notloggedin").hide();
+	}
+	else {
+		$("#welcome-section-loggedin").hide();
+		$("#welcome-section-notloggedin").show();
+		alert("asdfa");
+	}
+}
 function Start() {
 	// board = new Array();
 	board = [
-	[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-	[4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-	[4, 4, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 4, 4],
-	[4, 0, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 0, 4],
-	[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-	[4, 0, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 0, 4],
-	[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
-	[4, 4, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 4, 4],
-	[0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
-	[4, 4, 4, 4, 0, 4, 0, 4, 4, 0, 4, 4, 0, 4, 0, 4, 4, 4, 4],
-	[0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
-	[4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4],
-	[0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
-	[4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4],
-	[4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-	[4, 0, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 0, 4],
-	[4, 4, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 4, 4],
-	[4, 4, 0, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 0, 4, 4],
-	[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
-	[4, 0, 4, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 4, 0, 4],
-	[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-	[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+		[4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+		[4, 4, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 4, 4],
+		[4, 0, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 0, 4],
+		[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+		[4, 0, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 0, 4],
+		[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
+		[4, 4, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 4, 4],
+		[0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
+		[4, 4, 4, 4, 0, 4, 0, 4, 4, 0, 4, 4, 0, 4, 0, 4, 4, 4, 4],
+		[0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+		[4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4],
+		[0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
+		[4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4],
+		[4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+		[4, 0, 4, 4, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 4, 4, 0, 4],
+		[4, 4, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 4, 4],
+		[4, 4, 0, 4, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 4, 0, 4, 4],
+		[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
+		[4, 0, 4, 4, 4, 4, 4, 4, 0, 4, 0, 4, 4, 4, 4, 4, 4, 0, 4],
+		[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
 	];
 
 
@@ -112,32 +180,32 @@ function Start() {
 		// put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < board[0].length; j++) {
 			// if (
-				// (i == 0) || (i==9) || (j == 0) || (j == 9)
-				// (i == 1 && j == 4) ||
-				// (i == 1 && j == 5) ||
-				// (i == 6 && j == 1) ||
-				// (i == 6 && j == 2)
+			// (i == 0) || (i==9) || (j == 0) || (j == 9)
+			// (i == 1 && j == 4) ||
+			// (i == 1 && j == 5) ||
+			// (i == 6 && j == 1) ||
+			// (i == 6 && j == 2)
 			// ) {
 			// 	board[i][j] = WALL;
 			// } else {
-			if (board[i][j] == 4){continue;}
+			if (board[i][j] == 4) { continue; }
 			var randomNum = Math.random();
 			if (randomNum <= (1.0 * food_remain) / cnt) {
 				food_remain--;
 				board[i][j] = FOOD;
 			}
-			 else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
+			else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 				shape.i = i;
 				shape.j = j;
 				pacman_remain--;
 				board[i][j] = PACMAN;
 			}
-			 else {
+			else {
 				board[i][j] = FOOD;
 			}
 			cnt--;
-			}
 		}
+	}
 	// }
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
@@ -147,14 +215,14 @@ function Start() {
 	keysDown = {};
 	addEventListener(
 		"keydown",
-		function(e) {
+		function (e) {
 			keysDown[e.keyCode] = true;
 		},
 		false
 	);
 	addEventListener(
 		"keyup",
-		function(e) {
+		function (e) {
 			keysDown[e.keyCode] = false;
 		},
 		false
@@ -199,12 +267,12 @@ function Draw(pacmanDir = "Right") {
 			center.y = j * 30 + 30;
 			if (board[i][j] == PACMAN) {
 				context.beginPath();
-				if(pacmanDir == "Right"){
+				if (pacmanDir == "Right") {
 					context.arc(center.x, center.y, 15, 1.85 * Math.PI, 0.15 * Math.PI, true);
-				} else if (pacmanDir == "Left"){
+				} else if (pacmanDir == "Left") {
 					context.arc(center.x, center.y, 15, 1.15 * Math.PI, 0.85 * Math.PI, false); // half circle
-				}else if(pacmanDir == "Up"){
-					context.arc(center.x, center.y, 15, -0.3 * Math.PI, 1.3* Math.PI, false); // half circle
+				} else if (pacmanDir == "Up") {
+					context.arc(center.x, center.y, 15, -0.3 * Math.PI, 1.3 * Math.PI, false); // half circle
 				}
 
 				context.lineTo(center.x, center.y);
@@ -221,7 +289,7 @@ function Draw(pacmanDir = "Right") {
 				context.fill();
 			} else if (board[i][j] == WALL) {
 				context.beginPath();
-				context.rect(center.x-15 , center.y - 15, 30, 30);
+				context.rect(center.x - 15, center.y - 15, 30, 30);
 				context.fillStyle = "grey"; //color
 				context.fill();
 			}
@@ -274,7 +342,7 @@ function UpdatePosition() {
 	}
 }
 
-function registerUser(){
+function registerUser() {
 	console.log(users.length);
 	const username = document.getElementById('register-form-username').value;
 	const password = document.getElementById('register-form-password').value;
@@ -285,65 +353,63 @@ function registerUser(){
 	const birthdate = document.getElementById('register-form-birthdate').value;
 
 	const resultValidation = validateNewUser(username, password, confirmpassword, firstname, lastname, email, birthdate);
-	if(resultValidation !== 'VALID')
-	{
+	if (resultValidation !== 'VALID') {
 		alert(resultValidation);
 		return;
 	}
-	const newUser = {username: username, password: password, firstname: firstname, lastname: lastname, email: email, birthdate: birthdate};
+	const newUser = { username: username, password: password, firstname: firstname, lastname: lastname, email: email, birthdate: birthdate };
 	users.push(newUser);
 	alert('Registration completed successfully, Please head to Login page');
 }
 
-function validateNewUser(username, password, confirmpassword, firstname, lastname, email, birthdate){
-	if(username.length === 0)
-	{
+function validateNewUser(username, password, confirmpassword, firstname, lastname, email, birthdate) {
+	if (username.length === 0) {
 		return "Must fill User Name field.";
 	}
 	const letterNumber = /^[0-9a-zA-Z]+$/;
-	if(password.length < 6 || !(password.match(letterNumber)))
-	{
+	if (password.length < 6 || !(password.match(letterNumber))) {
 		return "Password must be at least 6 characters long, containing at least one digit [0-9] and one letter [A-Z,a-z]."
 	}
-	if(password !== confirmpassword)
-	{
+	if (password !== confirmpassword) {
 		return "Password and Confirm Password fields must be identical.";
 	}
 	const hasnumber = /\d/;
-	if(firstname.match(hasnumber))
-	{
+	if (firstname.match(hasnumber)) {
 		return "First Name must contain nothing but letters."
 	}
-	if(lastname.match(hasnumber))
-	{
+	if (lastname.match(hasnumber)) {
 		return "Last Name must contain nothing but letters."
 	}
 	const validMail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	if(! validMail.test(email.toLowerCase()))
-	{
+	if (!validMail.test(email.toLowerCase())) {
 		return "Mail is not valid";
 	}
 	return "VALID";
 
 }
 
-function logIn(){ 
+function logIn() {
 	const username = document.getElementById('login-form-username').value;
 	const password = document.getElementById('login-form-password').value;
-	console.log(username, password);
-	for(let i = 0; i < users.length; i++){
-		console.log(users[i]);
-		if(users[i].username === username)
-		{
-			if(users[i].password === password)
-			{
+	for (let i = 0; i < users.length; i++) {
+		if (users[i]['username'] === username) {
+			if (users[i]['password'] === password) {
 				loggedInUser = users[i];
-				alert("Welcome "+loggedInUser.firstname+"!");
+				alert("Welcome " + loggedInUser['firstname'] + "!");
+				$("#login-section").hide();
+				$("#welcome-section-loggedin").show();
+				$("#nav-login-btn").hide();
+				$("#nav-register-btn").hide();
+				$("#nav-logout-btn").show();
+				$("#nav-play-btn").show();
+				return false;
 			}
-			else{
+			else {
 				alert("Password is incorrect");
+				return false;
 			}
 		}
 	}
-	alert(username + " is not a registered User, please head to Registration page.")
+	alert(username + " is not a registered User, please head to Registration page.");
+	return false;
 }

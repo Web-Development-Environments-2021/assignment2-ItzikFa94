@@ -31,24 +31,51 @@
       </header>
       <nav id="top-nav-bar">
         <ul id="top-nav-bar-menu">
-          <li id="nav-welcome-btn" class="top-nav-bar-menu-item">Welcome</li>
+          <li
+            id="nav-welcome-btn"
+            class="top-nav-bar-menu-item"
+            onclick="welcomeClicked()"
+          >
+            Welcome
+          </li>
           <li id="nav-play-btn" class="top-nav-bar-menu-item">Play</li>
           <li id="nav-register-btn" class="top-nav-bar-menu-item">Register</li>
           <li id="nav-login-btn" class="top-nav-bar-menu-item">Login</li>
+          <li id="nav-logout-btn" class="top-nav-bar-menu-item">Logout</li>
           <li class="top-nav-bar-menu-item">
             <a href="#about" rel="modal:open">About</a>
           </li>
         </ul>
       </nav>
-      <section id="welcome-section">
+      <section class="welcome-section" id="welcome-section-notloggedin">
+        <!-- <div id="welcome-section-notloggedin"> -->
         <h1>Hi there, Welcome!</h1>
         <p>In order to enjoy PacMan, please Log in</p>
-        <input type="button" class="submitButton btnsWelcome" value="Login" />
+        <input
+          id="welcome-login-btn"
+          type="button"
+          class="submitButton btnsWelcome"
+          value="Login"
+        />
         <p>Don't have user? No problem</p>
         <input
+          id="welcome-register-btn"
           type="button"
           class="submitButton btnsWelcome"
           value="Register"
+        />
+        <!-- </div> -->
+        <!-- <div id="welcome-section-loggedin"> -->
+        <!-- </div> -->
+      </section>
+      <section class="welcome-section" id="welcome-section-loggedin">
+        <h1>Hi there, Welcome!</h1>
+        <p>Enjoy the game</p>
+        <input
+          id="welcome-play-btn"
+          type="button"
+          class="submitButton btnsWelcome"
+          value="PLAY!"
         />
       </section>
       <section id="play-section">
@@ -158,7 +185,7 @@
             />
           </div>
           <div class="submitButtonDiv formElement">
-            <input type="submit" class="submitButton" />
+            <input type="submit" class="submitButton" onclick="return logIn()"/>
             <input type="reset" class="submitButton" />
           </div>
         </form>
