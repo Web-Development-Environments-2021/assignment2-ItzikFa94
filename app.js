@@ -33,8 +33,9 @@ var verySpecialCandyCounter = 0;
 let ballColor5 = "#b8e994";
 let ballColor15 = "#079992";
 let ballColor25 = "#b71540";
-
+// var gameMusic;
 // var ghosts = [firstGhost];
+let timeLimit = 90;
 var LIFE = 5;
 const NUM_WALL = 207;
 const WALL = 4;
@@ -48,6 +49,7 @@ const SPECIAL_CANDY = 9;
 const VERY_SPECIAL_CANDY = 10;
 const ROW = 22;
 const COL = 19;
+const audio = new Audio("assets/images/playsong.mp3");
 var INTERVAL_SPECIAL = 500;
 var side = "Right";
 let numberBalls = 70;
@@ -231,7 +233,9 @@ function startGhosts(){
 }
 function Start() {
 	// board = new Array();
-	
+	var myMusic;
+	// myMusic = new sound("playsong.mp3");
+	audio.play();
 	board = [
 		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 		[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
@@ -252,7 +256,7 @@ function Start() {
 		[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
 		[4, 4, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 0, 4, 4],
 		[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
-		[4, 0, 4, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 4, 4, 4, 4, 0, 4],
+		[4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4],
 		[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
 		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
 	];
@@ -587,7 +591,7 @@ function ResetGhostsPositions(){
 	board[shape.i][shape.j] = 2;
 	score = score - 10;
 	for(let k = 0; k<numGhosts; k++){
-		if(ghostsSteps[k] != PACMAN && ghostsSteps[k] != GHOST){
+		if(ghostsSteps[k] != PACMAN ){
 			board[ghosts[k].i][ghosts[k].j] = ghostsSteps[k];
 		}
 		else{
@@ -750,6 +754,15 @@ function UpdatePosition() {
 	// calculateGhosts();
 	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000;
+	if(time_elapsed > timeLimit){
+		audio.pause();
+		audio.currentTime = 0;
+		window.clearInterval(interval);
+		if(score < 100){
+			window.alert("You are better than " + score +" Points!");
+		}else{window.alert("Winner!!!");}
+
+	}
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
@@ -758,8 +771,11 @@ function UpdatePosition() {
 	// 	window.alert("Game completed");
 	// }
 	if(LIFE == 0){
+		audio.pause();
+		audio.currentTime = 0;
 		window.clearInterval(interval);
 		window.alert("Loser!");
+
 	}
 	else {
 		lastPacman = side;
