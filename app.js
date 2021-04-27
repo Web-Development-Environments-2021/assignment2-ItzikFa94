@@ -49,7 +49,8 @@ const SPECIAL_CANDY = 9;
 const VERY_SPECIAL_CANDY = 10;
 const ROW = 22;
 const COL = 19;
-const audio = new Audio("assets/images/playsong.mp3");
+const audio = new Audio("assets/songs/cut_song.mov");
+audio.loop = true;
 var INTERVAL_SPECIAL = 500;
 var side = "Right";
 let numberBalls = 70;
@@ -744,15 +745,15 @@ function UpdatePosition() {
 	// calculateGhosts();
 	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000;
-	if(time_elapsed > timeLimit){
-		audio.pause();
-		audio.currentTime = 0;
-		window.clearInterval(interval);
-		if(score < 100){
-			window.alert("You are better than " + score +" Points!");
-		}else{window.alert("Winner!!!");}
+	// if(time_elapsed > timeLimit){
+	// 	audio.pause();
+	// 	audio.currentTime = 0;
+	// 	window.clearInterval(interval);
+	// 	if(score < 100){
+	// 		window.alert("You are better than " + score +" Points!");
+	// 	}else{window.alert("Winner!!!");}
 
-	}
+	// }
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
