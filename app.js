@@ -47,10 +47,12 @@ const COL = 19;
 var INTERVAL_SPECIAL = 500;
 var side = "Right";
 const FoodNumber = 100;
-const specialCandyTimer = new Date();
+let users = [{ username: 'k', password: 'k', firstname: 'Kyle', lastname: 'Kennedy', email: 'kk@gmail.com', birthdate: '30/06/1994' }];
+let loggedInUser = undefined;
+let goToReady = true;
 
-
-$(document).ready(function() {
+$(document).ready(function () {
+	let canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 	Start();
 });
@@ -58,6 +60,153 @@ function ResetGhosts(){
 	for(let i = 0; i < numGhosts; i++){
 		ghosts[i].i = ghostStartPositiong[i][0];
 		ghosts[i].j = ghostStartPositiong[i][1];
+	}
+};
+
+$(document).ready(function () {
+	$.validator.addMethod("validPassword", function (value) {
+		return /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(value);
+	}, 'Password must contain at least one character and one number');
+	$.validator.addMethod("noNumbers", function (value) {
+		return /^[a-zA-Z]+$/.test(value);
+	});
+	$('#registeration-form').validate({ // initialize the plugin
+		rules: {
+			registerFormUsername: {
+				required: true,
+			},
+			registerFormPassword: {
+				required: true,
+				validPassword: true,
+				minlength: 6,
+			},
+			registerFormConfirmPassword: {
+				equalTo: "#registerFormPassword",
+			},
+			registerFormFirstname: {
+				required: true,
+				noNumbers: true,
+			},
+			registerFormLastname: {
+				required: true,
+				noNumbers: true,
+			},
+			registerFormEmail: {
+				required: true,
+				email: true,
+			},
+			registerFormBirthdate: {
+				required: true,
+			}
+		},
+		messages: {
+			registerFormPassword: {
+				minlength: "Password must be at least 6 characters long."
+			},
+			registerFormConfirmPassword: {
+				equalTo: "Password and Confirm Password must match."
+			},
+			registerFormFirstname: {
+				noNumbers: "Letters allowed only."
+			},
+			registerFormLastname: {
+				noNumbers: "Letters allowed only."
+			}
+		}
+	});
+});
+
+$(document).ready(function () {
+	$("#play-section").hide();
+	$("#register-section").hide();
+	$("#login-section").hide();
+	if (loggedInUser !== undefined) {
+		$("#welcome-section-notloggedin").hide();
+		$("#nav-login-btn").hide();
+		$("#nav-register-btn").hide();
+	}
+	else {
+		$("#welcome-section-loggedin").hide();
+		$("#nav-logout-btn").hide();
+		$("#nav-play-btn").hide();
+	}
+
+	$("#nav-play-btn").click(function () {
+		$("#play-section").show();
+		$("#register-section").hide();
+		$("#login-section").hide();
+		$(".welcome-section").hide();
+	});
+
+	$("#nav-register-btn").click(function () {
+		$("#register-section").show();
+		$("#login-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	$("#nav-login-btn").click(function () {
+		$("#login-section").show();
+		$("#register-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	$("#welcome-login-btn").click(function () {
+		$("#login-section").show();
+		$("#register-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	$("#welcome-register-btn").click(function () {
+		$("#register-section").show();
+		$("#login-section").hide();
+		$(".welcome-section").hide();
+		$("#play-section").hide();
+	});
+
+	const
+		rangeB = document.getElementById('rangeB'),
+		rangeVB = document.getElementById('rangeVB'),
+		setValueB = () => {
+			const
+				newValue = Number((rangeB.value - rangeB.min) * 100 / (rangeB.max - rangeB.min)),
+				newPosition = 10 - (newValue * 0.2);
+			rangeVB.innerHTML = `<span>${rangeB.value}</span>`;
+			rangeVB.style.left = `calc(${newValue}% + (${newPosition}px))`;
+		};
+	document.addEventListener("DOMContentLoaded", setValueB);
+	rangeB.addEventListener('input', setValueB);
+
+	const
+	rangeM = document.getElementById('rangeM'),
+	rangeVM = document.getElementById('rangeVM'),
+	setValueM = () => {
+		const
+			newValue = Number((rangeM.value - rangeM.min) * 100 / (rangeM.max - rangeM.min)),
+			newPosition = 10 - (newValue * 0.2);
+		rangeVM.innerHTML = `<span>${rangeM.value}</span>`;
+		rangeVM.style.left = `calc(${newValue}% + (${newPosition}px))`;
+	};
+document.addEventListener("DOMContentLoaded", setValueM);
+rangeM.addEventListener('input', setValueM);
+});
+
+function welcomeClicked() {
+	$("#welcome-section").show();
+	$("#register-section").hide();
+	$("#login-section").hide();
+	$("#play-section").hide();
+	if (loggedInUser !== undefined) {
+		alert("loggedInUser is not null " + loggedInUser['username']);
+		$("#welcome-section-loggedin").show();
+		$("#welcome-section-notloggedin").hide();
+	}
+	else {
+		$("#welcome-section-loggedin").hide();
+		$("#welcome-section-notloggedin").show();
+		alert("asdfa");
 	}
 }
 function startGhosts(){ 
@@ -69,28 +218,28 @@ function Start() {
 	// board = new Array();
 	
 	board = [
-	[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-	[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
-	[4, 4, 4, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 0, 0, 4, 4, 4],
-	[4, 4, 4, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 0, 0, 4, 4, 4],
-	[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-	[4, 0, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 0, 0, 4],
-	[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
-	[4, 4, 4, 0, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 0, 4, 4, 4],
-	[4, 4, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 4, 4, 4],
-	[4, 0, 0, 0, 0, 4, 0, 4, 4, 0, 4, 4, 0, 4, 0, 0, 0, 0, 4],
-	[4, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 4],
-	[4, 4, 4, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 4, 4, 4],
-	[4, 4, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 4, 4, 4],
-	[4, 4, 4, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 4, 4, 4],
-	[4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-	[4, 4, 4, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4],
-	[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
-	[4, 4, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 0, 4, 4],
-	[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
-	[4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4],
-	[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
-	[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+		[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
+		[4, 4, 4, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 0, 0, 4, 4, 4],
+		[4, 4, 4, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 0, 0, 4, 4, 4],
+		[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+		[4, 0, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 0, 0, 4],
+		[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
+		[4, 4, 4, 0, 0, 4, 4, 4, 0, 4, 0, 4, 4, 4, 0, 0, 4, 4, 4],
+		[4, 4, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 4, 4, 4],
+		[4, 0, 0, 0, 0, 4, 0, 4, 4, 0, 4, 4, 0, 4, 0, 0, 0, 0, 4],
+		[4, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 4],
+		[4, 4, 4, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 4, 4, 4],
+		[4, 4, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 4, 4, 4],
+		[4, 4, 4, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 4, 4, 4],
+		[4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+		[4, 4, 4, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 4, 4, 4],
+		[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
+		[4, 4, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 0, 4, 4],
+		[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
+		[4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4],
+		[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
+		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
 	];
 	ResetGhosts();
 	startGhosts();
@@ -113,28 +262,28 @@ function Start() {
 		// board[i] = new Array();
 		// put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < board[0].length; j++) {
-			if (board[i][j] == WALL || board[i][j] == GHOST){
+			if (board[i][j] == WALL || board[i][j] == GHOST) {
 
 				continue;
 			}
 			var randomNum = Math.random();
-			let rndNumber = getRandomArbitrary(1,4); 
-			if (randomNum <= ( 1* food_remain) / cnt) {
+			let rndNumber = getRandomArbitrary(1, 4);
+			if (randomNum <= (1 * food_remain) / cnt) {
 				food_remain--;
 				board[i][j] = FOOD;
 			}
-			 else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
+			else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 				shape.i = i;
 				shape.j = j;
 				pacman_remain--;
 				board[i][j] = PACMAN;
 			}
-			 else  {
+			else {
 				board[i][j] = -1;
 			}
 			cnt--;
-			}
 		}
+	}
 	// }
 	// Update Speical Characater starting position
 	board[15][7] = SPECIAL_CHAR;
@@ -165,14 +314,14 @@ function Start() {
 	keysDown = {};
 	addEventListener(
 		"keydown",
-		function(e) {
+		function (e) {
 			keysDown[e.keyCode] = true;
 		},
 		false
 	);
 	addEventListener(
 		"keyup",
-		function(e) {
+		function (e) {
 			keysDown[e.keyCode] = false;
 		},
 		false
@@ -181,7 +330,8 @@ function Start() {
 	//intervalGhost = setInterval(UpdatePositionGhosts, 1000);
 	//intervalSpecial = setInterval(updatePositionSpecial, 250);
 }
-function updateFood(foodRemaining, foodType){
+	
+function updateFood(foodRemaining, foodType) {
 	while (foodRemaining > 0) {
 		var emptyCell = findRandomEmptyCell(board);
 		board[emptyCell[0]][emptyCell[1]] = foodType;
@@ -190,15 +340,15 @@ function updateFood(foodRemaining, foodType){
 }
 function getRandomArbitrary(min, max) {
 	return Math.random() * (max - min) + min;
-  }
+}
 function findRandomEmptyCell(board) {
 	// var i = Math.floor(Math.random() * board[0].length + 1);
 	// var j = Math.floor(Math.random() * board.length + 1);
-	var i = Math.floor(getRandomArbitrary(0, board[0].length+1));
-	var j = Math.floor(getRandomArbitrary(0, board.length+2));
+	var i = Math.floor(getRandomArbitrary(0, board[0].length + 1));
+	var j = Math.floor(getRandomArbitrary(0, board.length + 2));
 	while (board[i][j] != -1) {
-		i =  Math.round(getRandomArbitrary(0, board[0].length+1));
-		j = Math.round(getRandomArbitrary(0, board.length+1));
+		i = Math.round(getRandomArbitrary(0, board[0].length + 1));
+		j = Math.round(getRandomArbitrary(0, board.length + 1));
 
 	}
 	return [i, j];
@@ -261,12 +411,12 @@ function Draw(pacmanDir = "Right") {
 				context.arc(center.x, center.y+5, 7, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
-			}else if (board[i][j] == SPECIAL_FOOD){
+			} else if (board[i][j] == SPECIAL_FOOD) {
 				context.beginPath();
 				context.arc(center.x, center.y+3, 9, 0, 2 * Math.PI); // circle
 				context.fillStyle = "purple"; //color
 				context.fill();
-			}else if (board[i][j] == VERY_SPECIAL_FOOD){
+			} else if (board[i][j] == VERY_SPECIAL_FOOD) {
 				context.beginPath();
 				context.arc(center.x, center.y+5, 11, 0, 2 * Math.PI); // circle
 				context.fillStyle = "green"; //color
@@ -330,41 +480,41 @@ function BFS(startVertex, endVertex){
 	var nextVertex = null;
 	let visited = new Set();
 	let closed_list = new Set();
-	let distance = Array(ROW).fill().map(()=> Array(COL).fill(-1));
+	let distance = Array(ROW).fill().map(() => Array(COL).fill(-1));
 	let queue = [];
 	queue.push(startVertex);
 	visited.add(startVertex.toString());
 
-	let dirRow = [-1,1,0,0];
-	let	dirCol = [0,0,-1,1];
+	let dirRow = [-1, 1, 0, 0];
+	let dirCol = [0, 0, -1, 1];
 
-	while(queue.length >0){
+	while (queue.length > 0) {
 		let currentVertex = queue.shift();
 		let currentRow = currentVertex[0];
 		let currentCol = currentVertex[1];
-		for(let i=0; i<dirRow.length; i++){
+		for (let i = 0; i < dirRow.length; i++) {
 			let newRow = currentRow + dirRow[i];
 			let newCol = currentCol + dirCol[i];
 			// if works somehow dont forget to add more stuff other than wall
-			if(!visited.has([newRow,newCol].toString()) && newRow >= 0 && newCol >= 0 && newRow < ROW && newCol < COL && board[newRow][newCol] != 4  ){ 
-				visited.add([newRow,newCol].toString());
+			if (!visited.has([newRow, newCol].toString()) && newRow >= 0 && newCol >= 0 && newRow < ROW && newCol < COL && board[newRow][newCol] != 4) {
+				visited.add([newRow, newCol].toString());
 				distance[newRow][newCol] = distance[currentRow][currentCol] + 1;
-				queue.push([newRow,newCol]);
+				queue.push([newRow, newCol]);
 			}
 		}
 	}
-	if(distance[endVertex[0]][endVertex[1]] === -1){
-	console.log("Path does not exist");
+	if (distance[endVertex[0]][endVertex[1]] === -1) {
+		console.log("Path does not exist");
 	}
 	else {
 		let dis = distance[endVertex[0]][endVertex[1]];
 		nextVertex = [0,0];
 		let currentRow = endVertex[0];
 		let currentCol = endVertex[1];
-		for(let i=0; i<dirRow.length; i++){
+		for (let i = 0; i < dirRow.length; i++) {
 			let newRow = currentRow + dirRow[i];
 			let newCol = currentCol + dirCol[i];
-			if(distance[newRow][newCol] == dis-1 && board[newRow][newCol] != 4){
+			if (distance[newRow][newCol] == dis - 1 && board[newRow][newCol] != 4) {
 				nextVertex[0] = newRow;
 				nextVertex[1] = newCol;
 				break;
@@ -375,13 +525,13 @@ function BFS(startVertex, endVertex){
 
 	return nextVertex;
 }
-function UpdatePositionGhosts(){ 
+function UpdatePositionGhosts() {
 	let flag = false;
 	for(let k = 0; k<numGhosts; k++){
 		// console.log([ghosts[k].i,ghosts[k].j]);
 		// BFS([ghosts[k].i,ghosts[k].j],[shape.i,shape.j]);
 
-		var nextVertex = BFS([shape.i,shape.j],[ghosts[k].i,ghosts[k].j]);
+		var nextVertex = BFS([shape.i, shape.j], [ghosts[k].i, ghosts[k].j]);
 		// console.log(nextVertex);
 		board[ghosts[k].i][ghosts[k].j] = ghostsSteps[k];
 		if(board[nextVertex[0]][nextVertex[1]] == SPECIAL_CHAR){
@@ -393,8 +543,8 @@ function UpdatePositionGhosts(){
 			}
 			else{ghostsSteps[k] = board[nextVertex[0]][nextVertex[1]];}
 		}
-		
-		if(board[nextVertex[0]][nextVertex[1]] == PACMAN){
+
+		if (board[nextVertex[0]][nextVertex[1]] == PACMAN) {
 
 			board[nextVertex[0]][nextVertex[1]] = 5;
 			ghosts[k].i = nextVertex[0];
@@ -437,8 +587,8 @@ function ResetGhostsPositions(){
 		board[ghosts[k].i][ghosts[k].j] = GHOST;
 	}
 }
-function checkCell(i,j){
-	return i > 0 && j >0 && i < ROW && i < COL && board[i][j] != WALL && board[i][j] != GHOST;
+function checkCell(i, j) {
+	return i > 0 && j > 0 && i < ROW && i < COL && board[i][j] != WALL && board[i][j] != GHOST;
 }
 function updatePositionSpecial(){ 
 // 	var specialCounter = 0;
@@ -451,7 +601,7 @@ let nextCell = null;
 			specialDestination = dirArr[Math.round(getRandomArbitrary(0,3))];
 			specialCounter = 0;
 		}
-		else{specialCounter++;}
+		else { specialCounter++; }
 		// console.log(specialDestination);
 		// console.log([specialPosition.i,specialPosition.j]);
 		nextCell = BFS(specialDestination, [specialPosition.i,specialPosition.j])
@@ -461,10 +611,10 @@ let nextCell = null;
 		}
 
 		board[specialPosition.i][specialPosition.j] = lastSpecial;
-		if (board[nextCell[0]][nextCell[1]] != GHOST){
+		if (board[nextCell[0]][nextCell[1]] != GHOST) {
 			lastSpecial = board[nextCell[0]][nextCell[1]];
 		}
-		else{
+		else {
 			lastSpecial = findGhostLast(nextCell[0], nextCell[1]);
 		}
 
@@ -491,12 +641,12 @@ function UpdatePosition() {
 	var x = GetKeyPressed();
 	if (x == 1) {
 
-		if (shape.j > 0 && board[shape.i][shape.j-1] != 4) {
+		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
 			shape.j--;
 			side = "Up";
 		}
-		else if(board[shape.i][shape.j-1] != 4) {
-			shape.j = board[0].length-1;
+		else if (board[shape.i][shape.j - 1] != 4) {
+			shape.j = board[0].length - 1;
 			// console.log(shape.j);
 			side = "Up";
 		}
@@ -504,11 +654,11 @@ function UpdatePosition() {
 	if (x == 2) {
 
 		// console.log(shape.j);
-		if (shape.j < COL-1 && board[shape.i][shape.j + 1] != 4) {
+		if (shape.j < COL - 1 && board[shape.i][shape.j + 1] != 4) {
 			shape.j++;
 			side = "Down";
 		}
-		else if(board[shape.i][shape.j+1] != 4){
+		else if (board[shape.i][shape.j + 1] != 4) {
 			shape.j = 0;
 			side = "Down";
 		}
@@ -519,18 +669,18 @@ function UpdatePosition() {
 			shape.i--;
 			side = "Left";
 		}
-		else if(shape.i == 0 && board[shape.i][shape.j] != 4){
-			shape.i = board.length-1;
+		else if (shape.i == 0 && board[shape.i][shape.j] != 4) {
+			shape.i = board.length - 1;
 			side = "Left";
 		}
 	}
 	if (x == 4) {
 
-		if (shape.i < ROW-1 && board[shape.i + 1][shape.j] != 4) {
+		if (shape.i < ROW - 1 && board[shape.i + 1][shape.j] != 4) {
 			shape.i++;
 			side = "Right";
 		}
-		else if(shape.i == ROW-1 && board[shape.i ][shape.j] != 4) {
+		else if (shape.i == ROW - 1 && board[shape.i][shape.j] != 4) {
 			shape.i = 0;
 			side = "Right";
 		}
@@ -576,12 +726,12 @@ function UpdatePosition() {
 			score = score + 50;
 		}
 		board[shape.i][shape.j] = 2;
-		if (flagGhosts == 0){
+		if (flagGhosts == 0) {
 			UpdatePositionGhosts();
 			// updatePositionSpecial();
-			
+
 			flagGhosts = 1;
-		}else{flagGhosts = 0;}
+		} else { flagGhosts = 0; }
 	}
 
 	// calculateGhosts();
@@ -602,4 +752,112 @@ function UpdatePosition() {
 		lastPacman = side;
 		Draw(side);
 	}
+}
+
+function registerUser() {
+	const username = $("#registerFormUsername").val();
+	const password = $("#registerFormPassword").val();
+	const firstname = $("#registerFormFirstname").val();
+	const lastname = $("#registerFormLastname").val();
+	const email = $("#registerFormEmail").val();
+	const birthdate = $("#registerFormBirthdate").val();
+
+	const newUser = { username: username, password: password, firstname: firstname, lastname: lastname, email: email, birthdate: birthdate };
+	users.push(newUser);
+	alert('Registration completed successfully, Heading to login page');
+	$("#register-section").hide();
+	$("#login-section").show();
+	return false;
+}
+
+
+function logIn() {
+	const username = $("#login-form-username").val();
+	const password = $("#login-form-password").val();
+	for (let i = 0; i < users.length; i++) {
+		if (users[i]['username'] === username) {
+			if (users[i]['password'] === password) {
+				loggedInUser = users[i];
+				alert("Welcome " + loggedInUser['firstname'] + "!");
+				setLoggedIn();
+				return false;
+			}
+			else {
+				alert("Password is incorrect");
+				return false;
+			}
+		}
+	}
+	alert(username + " is not a registered User, please head to Registration page.");
+	return false;
+}
+
+function setLoggedIn() {
+	$("#login-section").hide();
+	$("#welcome-section-loggedin").show();
+	$("#nav-login-btn").hide();
+	$("#nav-register-btn").hide();
+	$("#nav-logout-btn").show();
+	$("#nav-play-btn").show();
+}
+
+function logout() {
+	loggedInUser = undefined;
+	setLoggedOut();
+}
+
+function setLoggedOut() {
+	$("#welcome-section-notloggedin").show();
+	$("#welcome-section-loggedin").hide();
+	$("#nav-login-btn").show();
+	$("#nav-register-btn").show();
+	$("#nav-logout-btn").hide();
+	$("#nav-play-btn").hide();
+}
+
+function randomPreferences(){ 
+	$("#preferences-5-pts").val(randomColor());
+	$("#preferences-15-pts").val(randomColor());
+	$("#preferences-25-pts").val(randomColor());
+	const rndBalls = Math.floor(Math.random()*41)+50;
+	const
+	rangeB = document.getElementById('rangeB'),
+	rangeVB = document.getElementById('rangeVB'),
+			newValue = Number((rndBalls - rangeB.min) * 100 / (rangeB.max - rangeB.min)),
+			newPosition = 10 - (newValue * 0.2);
+		rangeVB.innerHTML = `<span>${rndBalls}</span>`;
+		rangeVB.style.left = `calc(${newValue}% + (${newPosition}px))`;
+		$("#rangeB").val(rndBalls);
+
+		const rndMonsters = Math.floor(Math.random()*4)+1;
+		const
+		rangeM = document.getElementById('rangeM'),
+		rangeVM = document.getElementById('rangeVM'),
+				newValueM = Number((rndMonsters - rangeM.min) * 100 / (rangeM.max - rangeM.min)),
+				newPositionM = 10 - (newValueM * 0.2);
+			rangeVM.innerHTML = `<span>${rndMonsters}</span>`;
+			rangeVM.style.left = `calc(${newValueM}% + (${newPositionM}px))`;
+			$("#rangeM").val(rndMonsters);
+
+			$("#preferences-25-pts").val(randomColor());	
+	return false;
+}
+
+function randomColor(){
+	let rr = Math.floor(Math.random() * 256).toString(16);
+	if(rr.length == 1)
+	{
+		rr = "0"+rr;
+	}
+	let gg = Math.floor(Math.random() * 256).toString(16);
+	if(gg.length == 1)
+	{
+		gg = "0"+gg;
+	}
+	let bb = Math.floor(Math.random() * 256).toString(16);
+	if(bb.length == 1)
+	{
+		bb = "0"+bb;
+	}
+	return "#" + rr + gg + bb;
 }
