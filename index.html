@@ -85,10 +85,16 @@
         </div>
         <div id="life">
           <label for="lblLife">LIFE:</label>
-          <input id="lblLife" type="text" />
+          <input id="lblLife" type="text"/>
         </div>
         <div id="game">
           <canvas id="canvas" width="700" height="620"/>
+        </div>
+        <div id="preferences-selected">
+          <div id="preferences-selected-header"> Selected Preferences</div>
+          <p id="preferences-selected-balls">Number of balls: </p>
+          <p id="preferences-selected-monsters">Number of monsters: </p>
+          <p id="preferences-selected-time">Time Limit: </p>
         </div>
       </section>
       <section id="register-section" class="form-section">
@@ -272,7 +278,7 @@
     </div>
     </div>
           <div class="submitButtonDiv formElement">
-            <input type="submit" class="submitButton" onclick="return registerUser()"/>
+            <input type="submit" class="submitButton" onclick="return setPreferences()"/>
             <input type="button" class="submitButton" value="Random" onclick="return randomPreferences()"/>
           </div>
         </form>
