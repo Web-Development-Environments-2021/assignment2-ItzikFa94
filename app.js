@@ -18,7 +18,7 @@ var intervalGhost;
 var intervalSpecial;
 var flagGhosts = 0;
 var ghosts = [firstGhost, secondGhost, thirdGhost, fourthGhost];
-var numGhosts = 4;
+let numGhosts = 4;
 var ghostStartPositiong = [[1,1],[20,1],[20,17],[1,17]];
 var ghostsSteps = [0,0,0,0];
 var lastPacman = "Right";
@@ -30,8 +30,11 @@ var specialCounterRun = 0;
 var specialDestination = [1,6];
 var verySpecialCandyFlag = false;
 var verySpecialCandyCounter = 0;
+let ballColor5 = "#b8e994";
+let ballColor15 = "#079992";
+let ballColor25 = "#b71540";
 // var ghosts = [firstGhost];
-var LIFE = 5;
+var LIFE = 50;
 const NUM_WALL = 207;
 const WALL = 4;
 const GHOST = 5;
@@ -46,15 +49,13 @@ const ROW = 22;
 const COL = 19;
 var INTERVAL_SPECIAL = 500;
 var side = "Right";
-const FoodNumber = 100;
+let numberBalls = 70;
 let users = [{ username: 'k', password: 'k', firstname: 'Kyle', lastname: 'Kennedy', email: 'kk@gmail.com', birthdate: '30/06/1994' }];
 let loggedInUser = undefined;
-let goToReady = true;
 
 $(document).ready(function () {
 	let canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
-	Start();
 });
 function ResetGhosts(){ 
 	for(let i = 0; i < numGhosts; i++){
@@ -219,7 +220,7 @@ function Start() {
 	
 	board = [
 		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-		[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
+		[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
 		[4, 4, 4, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 0, 0, 4, 4, 4],
 		[4, 4, 4, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 0, 0, 4, 4, 4],
 		[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
@@ -237,12 +238,13 @@ function Start() {
 		[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
 		[4, 4, 0, 0, 0, 4, 0, 4, 4, 4, 4, 4, 0, 4, 0, 0, 0, 4, 4],
 		[4, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 4],
-		[4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4],
-		[4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4],
+		[4, 0, 4, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 4, 4, 4, 4, 0, 4],
+		[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
 		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
 	];
 	ResetGhosts();
 	startGhosts();
+	// board[1][17] = 5;
 	// board[1][20] = 5;
 	// board[1][1] = 5;
 
@@ -294,9 +296,9 @@ function Start() {
 	// food_remain = foodNumber*0.6;
 
 	// fill all the rest of the food
-	updateFood(FoodNumber*0.6, FOOD);
-	updateFood(FoodNumber*0.3,SPECIAL_FOOD);
-	updateFood(FoodNumber*0.1,VERY_SPECIAL_FOOD);
+	updateFood(numberBalls*0.6, FOOD);
+	updateFood(numberBalls*0.3,SPECIAL_FOOD);
+	updateFood(numberBalls*0.1,VERY_SPECIAL_FOOD);
 	for(let i = 0; i<specialCandies.length; i++){
 		var emptyCell = findRandomEmptyCell(board);
 		specialCandies[i].i = emptyCell[0];
@@ -409,17 +411,17 @@ function Draw(pacmanDir = "Right") {
 			} else if (board[i][j] == FOOD) {
 				context.beginPath();
 				context.arc(center.x, center.y+5, 7, 0, 2 * Math.PI); // circle
-				context.fillStyle = "black"; //color
+				context.fillStyle = ballColor5; //color
 				context.fill();
 			} else if (board[i][j] == SPECIAL_FOOD) {
 				context.beginPath();
 				context.arc(center.x, center.y+3, 9, 0, 2 * Math.PI); // circle
-				context.fillStyle = "purple"; //color
+				context.fillStyle = ballColor15; //color
 				context.fill();
 			} else if (board[i][j] == VERY_SPECIAL_FOOD) {
 				context.beginPath();
 				context.arc(center.x, center.y+5, 11, 0, 2 * Math.PI); // circle
-				context.fillStyle = "green"; //color
+				context.fillStyle = ballColor25; //color
 				context.fill();
 			} else if (board[i][j] == WALL) {
 				// context.beginPath();
@@ -496,7 +498,7 @@ function BFS(startVertex, endVertex){
 			let newRow = currentRow + dirRow[i];
 			let newCol = currentCol + dirCol[i];
 			// if works somehow dont forget to add more stuff other than wall
-			if (!visited.has([newRow, newCol].toString()) && newRow >= 0 && newCol >= 0 && newRow < ROW && newCol < COL && board[newRow][newCol] != 4) {
+			if (!visited.has([newRow, newCol].toString()) && newRow > 0 && newCol > 0 && newRow < ROW && newCol < COL && board[newRow][newCol] != WALL) {
 				visited.add([newRow, newCol].toString());
 				distance[newRow][newCol] = distance[currentRow][currentCol] + 1;
 				queue.push([newRow, newCol]);
@@ -570,7 +572,7 @@ function ResetGhostsPositions(){
 	board[shape.i][shape.j] = 2;
 	score = score - 10;
 	for(let k = 0; k<numGhosts; k++){
-		if(ghostsSteps[k] != PACMAN){
+		if(ghostsSteps[k] != PACMAN && ghostsSteps[k] != GHOST){
 			board[ghosts[k].i][ghosts[k].j] = ghostsSteps[k];
 		}
 		else{
@@ -856,4 +858,16 @@ function randomColor(){
 		bb = "0"+bb;
 	}
 	return "#" + rr + gg + bb;
+}
+
+function setPreferences(){
+	numberBalls = parseInt($("#rangeB").val(),10);
+	numGhosts = parseInt($("#rangeM").val(),10);
+	ballColor5 = $("#preferences-5-pts").val();
+	ballColor15 = $("#preferences-15-pts").val();
+	ballColor25 = $("#preferences-25-pts").val();
+	Start();
+	$("#play-section").show();
+	$("#preferences-section").hide();
+	return false;
 }
