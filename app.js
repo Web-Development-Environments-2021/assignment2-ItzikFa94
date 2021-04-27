@@ -35,8 +35,8 @@ let ballColor15 = "#079992";
 let ballColor25 = "#b71540";
 // var gameMusic;
 // var ghosts = [firstGhost];
-let timeLimit = 15;
-var LIFE = 50;
+let timeLimit = 90;
+var LIFE = 5;
 const NUM_WALL = 207;
 const WALL = 4;
 const GHOST = 5;
@@ -196,6 +196,19 @@ $(document).ready(function () {
 	};
 document.addEventListener("DOMContentLoaded", setValueM);
 rangeM.addEventListener('input', setValueM);
+
+const
+	rangeT = document.getElementById('rangeT'),
+	rangeVT = document.getElementById('rangeVT'),
+	setValueT = () => {
+		const
+			newValue = Number((rangeT.value - rangeT.min) * 100 / (rangeT.max - rangeT.min)),
+			newPosition = 10 - (newValue * 0.2);
+		rangeVT.innerHTML = `<span>${rangeT.value}</span>`;
+		rangeVT.style.left = `calc(${newValue}% + (${newPosition}px))`;
+	};
+document.addEventListener("DOMContentLoaded", setValueT);
+rangeT.addEventListener('input', setValueT);
 });
 
 function welcomeClicked() {
@@ -250,13 +263,6 @@ function Start() {
 	];
 	ResetGhosts();
 	startGhosts();
-	// board[1][17] = 5;
-	// board[1][20] = 5;
-	// board[1][1] = 5;
-
-	// board[20][1] = 5;
-	// board[20][17] = 5;
-	// board[1][17] = 5;
 
 
 	score = 0;
@@ -380,10 +386,14 @@ function GetKeyPressed() {
 function Draw(pacmanDir = "Right") {
 
 	canvas.width = canvas.width; //clean board
-	lblScore.value = score;
-	lblTime.value = time_elapsed;
-	lblLife.value = LIFE;
-	var eyes_x = 0;
+	lblScore.innerHTML = "Score: " + score;
+	lblTime.innerHTML = "Time Left: " + parseInt(time_elapsed) + " secs";
+	$("#lives").html('<p>Lives left: </label>');
+	for(let i = 0; i < LIFE; i++)
+	{
+		$("#lives").append('<img src="assets/images/heart.svg" width="30px" height="30px">');
+	}
+	var eyes_x = 5;
 	var eyes_y = 10;
 
 	for (var i = 0; i < board.length; i++) {
@@ -859,7 +869,17 @@ function randomPreferences(){
 			rangeVM.style.left = `calc(${newValueM}% + (${newPositionM}px))`;
 			$("#rangeM").val(rndMonsters);
 
-			$("#preferences-25-pts").val(randomColor());	
+	
+	const rndTime = Math.floor(Math.random()*241)+60;
+		const
+		rangeT = document.getElementById('rangeT'),
+		rangeVT = document.getElementById('rangeVT'),
+				newValueT = Number((rndTime - rangeT.min) * 100 / (rangeT.max - rangeT.min)),
+				newPositionT = 10 - (newValueT * 0.2);
+			rangeVT.innerHTML = `<span>${rndTime}</span>`;
+			rangeVT.style.left = `calc(${newValueT}% + (${newPositionT}px))`;
+			$("#rangeT").val(rndTime);
+
 	return false;
 }
 
@@ -888,6 +908,10 @@ function setPreferences(){
 	ballColor5 = $("#preferences-5-pts").val();
 	ballColor15 = $("#preferences-15-pts").val();
 	ballColor25 = $("#preferences-25-pts").val();
+	$("#preferences-selected-header").html(loggedInUser["username"] + " Selected Preferences");
+	$("#preferences-selected-balls").html("Number of balls: " + numberBalls);
+	$("#preferences-selected-monsters").html("Number of monsters: " + numGhosts);
+	$("#preferences-selected-time").html("Time Limit: " + "ARIEL INSERT TIME");
 	Start();
 	$("#play-section").show();
 	$("#preferences-section").hide();

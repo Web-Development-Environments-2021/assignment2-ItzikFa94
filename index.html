@@ -75,26 +75,27 @@
         />
       </section>
       <section id="play-section">
+        <div class="row">
+        <div id="preferences-selected">
+          <h3 id="preferences-selected-header"></h3>
+          <p id="preferences-selected-balls"></p>
+          <p id="preferences-selected-monsters"></p>
+          <p id="preferences-selected-time"></p>
+        </div>
+        <div>
+          <h3>Game Details</h3>
         <div id="score">
-          <label for="lblScore">SCORE:</label>
-          <input id="lblScore" type="text" />
+          <p id="lblScore"></p>
         </div>
         <div id="time">
-          <label for="lblTime">TIME:</label>
-          <input id="lblTime" type="text" />
+          <p id="lblTime"></p>
         </div>
-        <div id="life">
-          <label for="lblLife">LIFE:</label>
-          <input id="lblLife" type="text"/>
+        <div id="lives">
         </div>
+      </div>
+      </div>
         <div id="game">
           <canvas id="canvas" width="700" height="620"/>
-        </div>
-        <div id="preferences-selected">
-          <div id="preferences-selected-header"> Selected Preferences</div>
-          <p id="preferences-selected-balls">Number of balls: </p>
-          <p id="preferences-selected-monsters">Number of monsters: </p>
-          <p id="preferences-selected-time">Time Limit: </p>
         </div>
       </section>
       <section id="register-section" class="form-section">
@@ -264,7 +265,7 @@
           <div class="keySetting">
             <div class="range-wrap">
               <div class="range-value" id="rangeVT"></div>
-              <input id="rangeT" type="range" min="60" max="300" value="4" step="1">
+              <input id="rangeT" type="range" min="60" max="300" value="120" step="10">
             </div></div>
       </div>
   </div>

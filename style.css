@@ -5,6 +5,15 @@ body{
   font-family: "Odibee Sans", cursive;
   font-weight: lighter;
 }
+
+.row{
+  display: flex;
+  flex-direction: row;
+  width: 700px;
+  justify-content: space-evenly;
+  color: #f1dc5c;
+  text-shadow: 3px 3px black;
+}
 #content{
   width: 75%;
   margin: auto;
@@ -294,10 +303,12 @@ label.error{
   padding: 5% 0 10% 0;
 }
 
-#play-section label{
+#play-section label, #play-section h3{
+  font-size: 40px;
+}
+#play-section div p{
   font-size: 30px;
 }
-
 .preferences-form-section::after{
   display: block;
   height: 2px;
@@ -392,4 +403,14 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   left: 50%;
   margin-left: -5px;
   margin-top: -1px;
+}
+
+#preferences-selected p{
+  margin-left: 5%;
+}
+
+#lives{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
