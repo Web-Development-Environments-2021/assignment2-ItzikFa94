@@ -2,8 +2,8 @@
 <html>
   <head>
     <script src="./jquery-3.4.1.slim.min.js"></script>
-    <script src="jquery.js"></script>
-    <script src="jquery.validate.js"></script>
+    <!-- <script src="jquery.js"></script>
+    <script src="jquery.validate.js"></script> -->
     <link rel="stylesheet" href="style.css" />
     <script type="text/javascript" src="./app.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -41,14 +41,13 @@
           <li id="nav-play-btn" class="top-nav-bar-menu-item">Play</li>
           <li id="nav-register-btn" class="top-nav-bar-menu-item">Register</li>
           <li id="nav-login-btn" class="top-nav-bar-menu-item">Login</li>
-          <li id="nav-logout-btn" class="top-nav-bar-menu-item">Logout</li>
+          <li id="nav-logout-btn" class="top-nav-bar-menu-item" onclick="logout()">Logout</li>
           <li class="top-nav-bar-menu-item">
             <a href="#about" rel="modal:open">About</a>
           </li>
         </ul>
       </nav>
       <section class="welcome-section" id="welcome-section-notloggedin">
-        <!-- <div id="welcome-section-notloggedin"> -->
         <h1>Hi there, Welcome!</h1>
         <p>In order to enjoy PacMan, please Log in</p>
         <input
@@ -64,9 +63,6 @@
           class="submitButton btnsWelcome"
           value="Register"
         />
-        <!-- </div> -->
-        <!-- <div id="welcome-section-loggedin"> -->
-        <!-- </div> -->
       </section>
       <section class="welcome-section" id="welcome-section-loggedin">
         <h1>Hi there, Welcome!</h1>
@@ -88,13 +84,13 @@
           <input id="lblTime" type="text" />
         </div>
         <div id="game">
-          <canvas id="canvas" height="1000" width="1000"></canvas>
+          <canvas id="canvas" width="700" height="620"/>
         </div>
       </section>
       <section id="register-section" class="form-section">
         <form id="registeration-form" class="application-forms">
           <div class="formInstructionsDiv formElement">
-            <h2 id="formTitle">Sign Up</h2>
+            <h2 class="formTitle">Sign Up</h2>
             <p id="instructionsText">
               Please fill in this form to register your account
             </p>
@@ -104,22 +100,22 @@
               class="inputRequest formContentElement"
               type="text"
               placeholder="User Name"
-              id="username"
-              name="username"
+              id="registerFormUsername"
+              name="registerFormUsername"
             />
             <input
               class="inputRequest formContentElement"
               type="password"
               placeholder="Enter password"
-              id="password"
-              name="password"
+              id="registerFormPassword"
+              name="registerFormPassword"
             />
             <input
               class="inputRequest formContentElement"
               type="password"
               placeholder="Confirm password"
-              id="register-form-confirmpassword"
-              name="confirmpassword"
+              id="registerFormConfirmPassword"
+              name="registerFormConfirmPassword"
             />
             <div class="names formContentElement">
               <div class="sub-names">
@@ -127,8 +123,8 @@
                   class="inputRequest"
                   type="text"
                   placeholder="First Name"
-                  id="register-form-firstname"
-                  name="firstname"
+                  id="registerFormFirstname"
+                  name="registerFormFirstname"
                 />
               </div>
               <div class="sub-names">
@@ -136,8 +132,8 @@
                   class="inputRequest"
                   type="text"
                   placeholder="Last Name"
-                  id="register-form-lastname"
-                  name="lastname"
+                  id="registerFormLastname"
+                  name="registerFormLastname"
                 />
               </div>
             </div>
@@ -145,21 +141,21 @@
               class="inputRequest formContentElement"
               type="text"
               placeholder="Email"
-              id="register-form-email"
-              name="email"
+              id="registerFormEmail"
+              name="registerFormEmail"
             />
             <input
               class="inputRequest formContentElement"
               type="text"
               placeholder="Birth Date"
-              id="register-form-birthdate"
-              name="birthdate"
+              id="registerFormBirthdate"
+              name="registerFormBirthdate"
               onfocus="this.type='date'"
               onblur="this.type='text'"
             />
           </div>
           <div class="submitButtonDiv formElement">
-            <input type="submit" class="submitButton" />
+            <input type="submit" class="submitButton" onclick="return registerUser()"/>
             <input type="reset" class="submitButton" />
           </div>
         </form>
@@ -167,7 +163,7 @@
       <section id="login-section" class="form-section">
         <form id="login-section-form" class="application-forms">
           <div class="formInstructionsDiv formElement">
-            <h2 id="formTitle">Log In</h2>
+            <h2 class="formTitle">Log In</h2>
             <p id="instructionsText">Please log in to start play</p>
           </div>
           <div class="fillContentDiv formElement">
@@ -187,6 +183,93 @@
           <div class="submitButtonDiv formElement">
             <input type="submit" class="submitButton" onclick="return logIn()"/>
             <input type="reset" class="submitButton" />
+          </div>
+        </form>
+      </section>
+      <section id="preferences-section" class="form-section">
+        <form id="preferences-form" class="application-forms">
+          <div class="formInstructionsDiv formElement">
+            <h2 class="formTitle">Preferences</h2>
+            <p id="instructionsText">
+              Choose your preferences before start playing
+            </p>
+          </div>
+          <div class="fillContentDiv formElement">
+            <div class="preferences-form-section">
+              <h3>Key Settings: </h3>
+              <div class="preferences-form-section-attribute">
+              <div class="keySetting">
+                <label for="preferences-left">LEFT</label>
+                  <input type="text" id="preferences-left">
+                </label>
+              </div>
+              <div class="keySetting">
+                <label for="preferences-up">UP</label>
+                  <input type="text" id="preferences-up">
+                </label>
+              </div>
+              <div class="keySetting">
+                <label for="preferences-down">DOWN</label>
+                  <input type="text" id="preferences-down">
+                </label>
+              </div>
+              <div class="keySetting">
+                <label for="preferences-right">RIGHT</label>
+                  <input type="text" id="preferences-right">
+                </label>
+              </div>
+            </div>
+        </div>
+        <div class="preferences-form-section">
+          <h3>Number of balls: </h3>
+          <div class="keySetting">
+          <div class="range-wrap">
+            <div class="range-value" id="rangeVB"></div>
+            <input id="rangeB" type="range" min="50" max="90" value="70" step="1">
+          </div></div>
+          </div>
+          <div class="preferences-form-section">
+            <h3>Colors: </h3>
+            <div class="preferences-form-section-attribute">
+            <div class="keySetting">
+              <label for="preferences-5-pts">5 pts.</label>
+                <input type="color" id="preferences-5-pts" value="#b8e994">
+              </label>
+            </div>
+            <div class="keySetting">
+              <label for="preferences-15-pts">15 pts.</label>
+                <input type="color" id="preferences-15-pts" value="#079992">
+              </label>
+            </div>
+            <div class="keySetting">
+              <label for="preferences-25-pts">25 pts.</label>
+                <input type="color" id="preferences-25-pts" value="#b71540">
+              </label>
+            </div>
+          </div>
+      </div>
+      <div class="preferences-form-section">
+        <h3>Time: </h3>
+        <div class="preferences-form-section-attribute">
+          <div class="keySetting">
+            <div class="range-wrap">
+              <div class="range-value" id="rangeVT"></div>
+              <input id="rangeT" type="range" min="60" max="300" value="4" step="1">
+            </div></div>
+      </div>
+  </div>
+  <div class="preferences-form-section">
+    <h3>Number of monsters: </h3>
+    <div class="keySetting">
+    <div class="range-wrap">
+      <div class="range-value" id="rangeVM"></div>
+      <input id="rangeM" type="range" min="1" max="4" value="4" step="1">
+    </div></div>
+    </div>
+    </div>
+          <div class="submitButtonDiv formElement">
+            <input type="submit" class="submitButton" onclick="return registerUser()"/>
+            <input type="button" class="submitButton" value="Random" onclick="return randomPreferences()"/>
           </div>
         </form>
       </section>
