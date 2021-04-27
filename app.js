@@ -31,7 +31,7 @@ var specialDestination = [1,6];
 var verySpecialCandyFlag = false;
 var verySpecialCandyCounter = 0;
 // var ghosts = [firstGhost];
-var LIFE = 5;
+var LIFE = 150;
 const NUM_WALL = 207;
 const WALL = 4;
 const GHOST = 5;
@@ -387,7 +387,11 @@ function UpdatePositionGhosts(){
 		if(board[nextVertex[0]][nextVertex[1]] == SPECIAL_CHAR){
 			ghostsSteps[k] = board[specialPosition.i,specialPosition.j]
 		}else{
-			ghostsSteps[k] = board[nextVertex[0]][nextVertex[1]];
+			if (board[nextVertex[0]][nextVertex[1]] == GHOST){
+				let tempCell = findGhostLast(nextVertex[0], nextVertex[1]);
+				ghostsSteps[k] = tempCell;
+			}
+			else{ghostsSteps[k] = board[nextVertex[0]][nextVertex[1]];}
 		}
 		
 		if(board[nextVertex[0]][nextVertex[1]] == PACMAN){
@@ -420,7 +424,7 @@ function ResetGhostsPositions(){
 	board[shape.i][shape.j] = 2;
 	score = score - 10;
 	for(let k = 0; k<numGhosts; k++){
-		if(ghostsSteps[k] != PACMAN){
+		if(ghostsSteps[k] != PACMAN && ghostsSteps[k] != GHOST){
 			board[ghosts[k].i][ghosts[k].j] = ghostsSteps[k];
 		}
 		else{
@@ -586,10 +590,10 @@ function UpdatePosition() {
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
-	if (score == 50) {
-		window.clearInterval(interval);
-		window.alert("Game completed");
-	}
+	// if (score == 50) {
+	// 	window.clearInterval(interval);
+	// 	window.alert("Game completed");
+	// }
 	if(LIFE == 0){
 		window.clearInterval(interval);
 		window.alert("Loser!");
