@@ -536,10 +536,14 @@ function UpdatePositionGhosts() {
 		var nextVertex = BFS([shape.i, shape.j], [ghosts[k].i, ghosts[k].j]);
 		// console.log(nextVertex);
 		board[ghosts[k].i][ghosts[k].j] = ghostsSteps[k];
-		if (board[nextVertex[0]][nextVertex[1]] == SPECIAL_CHAR) {
-			ghostsSteps[k] = board[specialPosition.i, specialPosition.j]
-		} else {
-			ghostsSteps[k] = board[nextVertex[0]][nextVertex[1]];
+		if(board[nextVertex[0]][nextVertex[1]] == SPECIAL_CHAR){
+			ghostsSteps[k] = board[specialPosition.i,specialPosition.j]
+		}else{
+			if (board[nextVertex[0]][nextVertex[1]] == GHOST){
+				let tempCell = findGhostLast(nextVertex[0], nextVertex[1]);
+				ghostsSteps[k] = tempCell;
+			}
+			else{ghostsSteps[k] = board[nextVertex[0]][nextVertex[1]];}
 		}
 
 		if (board[nextVertex[0]][nextVertex[1]] == PACMAN) {
@@ -738,10 +742,10 @@ function UpdatePosition() {
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
-	if (score == 50) {
-		window.clearInterval(interval);
-		window.alert("Game completed");
-	}
+	// if (score == 50) {
+	// 	window.clearInterval(interval);
+	// 	window.alert("Game completed");
+	// }
 	if(LIFE == 0){
 		window.clearInterval(interval);
 		window.alert("Loser!");
