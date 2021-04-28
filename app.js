@@ -128,7 +128,7 @@ $(document).ready(function () {
 	$("#register-section").hide();
 	$("#login-section").hide();
 	$("#preferences-section").hide();
-	if (loggedInUser !== undefined) {
+	if (loggedInUser !== null) {
 		$("#welcome-section-notloggedin").hide();
 		$("#nav-login-btn").hide();
 		$("#nav-register-btn").hide();
