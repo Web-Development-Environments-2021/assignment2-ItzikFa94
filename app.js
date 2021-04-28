@@ -37,8 +37,6 @@ let left_key = 37;
 let right_key = 39;
 let up_key = 38;
 let down_key = 40;
-// var gameMusic;
-// var ghosts = [firstGhost];
 let timeLimit = 90;
 let LIFE = 5;
 const NUM_WALL = 207;
@@ -59,7 +57,7 @@ var INTERVAL_SPECIAL = 500;
 var side = "Right";
 let numberBalls = 70;
 let users = [{ username: 'k', password: 'k', firstname: 'Kyle', lastname: 'Kennedy', email: 'kk@gmail.com', birthdate: '30/06/1994' }];
-let loggedInUser = users[0];
+let loggedInUser = null;
 
 $(document).ready(function () {
 	let canvas = document.getElementById("canvas");
