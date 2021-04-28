@@ -808,7 +808,7 @@ function setLoggedIn() {
 }
 
 function logout() {
-	loggedInUser = undefined;
+	loggedInUser = null;
 	setLoggedOut();
 }
 
