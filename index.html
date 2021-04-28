@@ -97,8 +97,7 @@
             <div id="time">
               <p id="lblTime"></p>
             </div>
-            <div id="lives">
-            </div>
+            <div id="lives"></div>
           </div>
         </div>
         <div id="game">
@@ -223,22 +222,45 @@
           <div class="fillContentDiv formElement">
             <div class="preferences-form-section">
               <h3>Key Settings:</h3>
-              <div class="preferences-form-section-attribute">
+              <div
+                id="keysPreference"
+                class="preferences-form-section-attribute"
+              >
+                <p>
+                  Click on one of the buttoms below and then press keyboard's
+                  desired key.
+                </p>
                 <div class="keySetting">
-                  <label for="preferences-left">LEFT</label>
-                  <input type="text" id="preferences-left" />
+                  <p
+                    id="preferences-up"
+                    class="btn-preference"
+                    onclick="return setUserKey('U')"
+                  >
+                    UP
+                  </p>
                 </div>
                 <div class="keySetting">
-                  <label for="preferences-up">UP</label>
-                  <input type="text" id="preferences-up" />
-                </div>
-                <div class="keySetting">
-                  <label for="preferences-down">DOWN</label>
-                  <input type="text" id="preferences-down" />
-                </div>
-                <div class="keySetting">
-                  <label for="preferences-right">RIGHT</label>
-                  <input type="text" id="preferences-right" />
+                  <p
+                    id="preferences-left"
+                    class="btn-preference"
+                    onclick="return setUserKey('L')"
+                  >
+                    LEFT
+                  </p>
+                  <p
+                    id="preferences-down"
+                    class="btn-preference"
+                    onclick="return setUserKey('D')"
+                  >
+                    DOWN
+                  </p>
+                  <p
+                    id="preferences-right"
+                    class="btn-preference"
+                    onclick="return setUserKey('R')"
+                  >
+                    RIGHT
+                  </p>
                 </div>
               </div>
             </div>
@@ -263,15 +285,30 @@
               <div class="preferences-form-section-attribute">
                 <div class="keySetting">
                   <label for="preferences-5-pts">5 pts.</label>
-                  <input type="color" id="preferences-5-pts" value="#b8e994" />
+                  <input
+                    type="color"
+                    id="preferences-5-pts"
+                    value="#b8e994"
+                    class="clickable"
+                  />
                 </div>
                 <div class="keySetting">
                   <label for="preferences-15-pts">15 pts.</label>
-                  <input type="color" id="preferences-15-pts" value="#079992" />
+                  <input
+                    type="color"
+                    id="preferences-15-pts"
+                    value="#079992"
+                    class="clickable"
+                  />
                 </div>
                 <div class="keySetting">
                   <label for="preferences-25-pts">25 pts.</label>
-                  <input type="color" id="preferences-25-pts" value="#b71540" />
+                  <input
+                    type="color"
+                    id="preferences-25-pts"
+                    value="#b71540"
+                    class="clickable"
+                  />
                 </div>
               </div>
             </div>
@@ -291,8 +328,6 @@
                   />
                 </div>
               </div>
-
-
             </div>
             <div class="preferences-form-section">
               <h3>Number of monsters:</h3>
@@ -326,7 +361,21 @@
           </div>
         </form>
       </section>
-      <footer>This is a fucking footer</footer>
+      <footer>
+        <p>Contact us:</p>
+        <p>
+          Itzik Fadida
+          <a href="mailto:yitzhakh@post.bgu.ac.il"
+            ><img src="assets/images/mail-send.png"
+          /></a>
+        </p>
+        <p>
+          Ariel Blobstein
+          <a href="mailto:arielblo@post.bgu.ac.il"
+            ><img src="assets/images/mail-send.png"
+          /></a>
+        </p>
+      </footer>
 
       <div id="about" class="modal">
         <div id="about-header" class="formInstructionsDiv formElement">
