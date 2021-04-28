@@ -235,14 +235,12 @@ function welcomeClicked() {
 	$("#login-section").hide();
 	$("#play-section").hide();
 	if (loggedInUser !== undefined) {
-		alert("loggedInUser is not null " + loggedInUser['username']);
 		$("#welcome-section-loggedin").show();
 		$("#welcome-section-notloggedin").hide();
 	}
 	else {
 		$("#welcome-section-loggedin").hide();
 		$("#welcome-section-notloggedin").show();
-		alert("asdfa");
 	}
 }
 function startGhosts() {
