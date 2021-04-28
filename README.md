@@ -1,6 +1,6 @@
 # Web Development Project 2
 # Web Link:
-INSERT WEB LINK
+https://web-development-environments-2021.github.io/assignment2_206197113_205417637/![image](https://user-images.githubusercontent.com/49044964/116454406-a1d3a780-a868-11eb-93fb-8ef1569e4a8e.png)
 # Submitters:
 - Ariel Blobstein : 206197113
 - Itzik Fadia : 205417637
