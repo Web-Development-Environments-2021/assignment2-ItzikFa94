@@ -49,7 +49,8 @@ const SPECIAL_CANDY = 9;
 const VERY_SPECIAL_CANDY = 10;
 const ROW = 22;
 const COL = 19;
-const audio = new Audio("assets/images/playsong.mp3");
+const audio = new Audio("assets/songs/cut_song.mov");
+audio.loop = true;
 var INTERVAL_SPECIAL = 500;
 var side = "Right";
 let numberBalls = 70;
@@ -771,13 +772,7 @@ function UpdatePosition() {
 		} else { window.alert("Winner!!!"); }
 		Draw();
 	}
-	// if (score >= 20 && time_elapsed <= 10) {
-	// 	pac_color = "green";
-	// }
-	// if (score == 50) {
-	// 	window.clearInterval(interval);
-	// 	window.alert("Game completed");
-	// }
+
 	if (LIFE == 0) {
 		audio.pause();
 		audio.currentTime = 0;
